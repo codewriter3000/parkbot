@@ -6,9 +6,7 @@ import { useOptionalUser } from "~/utils";
 import { authenticator } from "~/auth.server"
 
 export const loader: LoaderFunction = async ({ request }) => {
-  const user = await authenticator.isAuthenticated(request, {
-    successRedirect: "/dashboard",
-  })
+  const user = await authenticator.isAuthenticated(request)
   return user
 }
 
@@ -25,7 +23,7 @@ const SocialButton: React.FC<SocialButtonProps> = ({ provider, label, className 
 )
 
 export default function Index() {
-  const user = useOptionalUser();
+  const user = useLoaderData()
   return (
     <main className="relative min-h-screen bg-white sm:flex sm:items-center sm:justify-center">
       <div className="relative sm:pb-16 sm:pt-8">
@@ -51,10 +49,10 @@ export default function Index() {
               <div className="mx-auto mt-10 max-w-sm sm:flex sm:max-w-none sm:justify-center">
                 {user ? (
                   <Link
-                    to="/notes"
+                    to="/dashboard"
                     className="flex items-center justify-center rounded-md border border-transparent bg-white px-4 py-3 text-base font-medium text-yellow-700 shadow-sm hover:bg-yellow-50 sm:px-8"
                   >
-                    View Notes for {user.email}
+                    Go to dashboard
                   </Link>
                 ) : (
                   <div className="space-y-4 sm:mx-auto sm:inline-grid sm:grid-cols-1 sm:gap-5 sm:space-y-0">
