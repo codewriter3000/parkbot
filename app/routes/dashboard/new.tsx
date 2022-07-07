@@ -65,6 +65,67 @@ export default function AddCommunityPage() {
       }}
     >
       <div>
+        Add a community to parkbot
+      </div>
+
+      <div className="grid grid-rows-2 grid-flow-col gap-4 py-4">
+        <div>1. <em>Select community type</em></div>
+        <div>2. <em>Link parkbot to community</em></div>
+        <div>
+          <select className="form-select appearance-none
+            block
+            w-full
+            px-3
+            py-1.5
+            text-base
+            font-normal
+            text-gray-700
+            bg-white bg-clip-padding bg-no-repeat
+            border border-solid border-gray-300
+            rounded
+            transition
+            ease-in-out
+            m-0
+            focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+            aria-label="Default select example">
+            <option>Discord</option>
+          </select>
+        </div>
+        <div>
+        <button type="button" className="inline-block px-6 py-2.5
+        bg-indigo-600
+        text-white
+        font-medium
+        text-md
+        leading-tight
+        rounded
+        shadow-md
+        hover:bg-slate-700
+        hover:shadow-lg
+        focus:bg-slate-900
+        focus:shadow-lg
+        focus:outline-none
+        focus:ring-0
+        active:bg-slate-900
+        active:shadow-lg
+        transition
+        duration-150
+        ease-in-out">Invite discord bot</button>
+        </div>
+      </div>
+
+      <div className="text-right py-4">
+        <button
+          type="submit"
+          className="rounded bg-gray-400 py-2 px-4 text-white
+          hover:bg-slate-700
+          focus:bg-slate-900"
+        >
+          Close
+        </button>
+      </div>
+
+      {/* <div>
         <label className="flex w-full flex-col gap-1">
           <span>Title: </span>
           <input
@@ -101,16 +162,7 @@ export default function AddCommunityPage() {
         {actionData?.errors?.body && (<div className="pt-1 text-red-700" id="body-error"> {actionData.errors.body}
         </div>
         )}
-      </div>
-
-      <div className="text-right">
-        <button
-          type="submit"
-          className="rounded bg-blue-500 py-2 px-4 text-white hover:bg-blue-600 focus:bg-blue-400"
-        >
-          Save
-        </button>
-      </div>
+      </div> */}
     </Form>
   );
 }
