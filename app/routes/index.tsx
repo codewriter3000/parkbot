@@ -34,20 +34,19 @@ export default function Index() {
             <div className="absolute inset-0">
               <img
                 className="h-full w-full object-cover"
-                src="https://user-images.githubusercontent.com/1500684/157774694-99820c51-8165-4908-a031-34fc371ac0d6.jpg"
-                alt="Sonic Youth On Stage"
+                src="https://user-images.githubusercontent.com/34061508/177762578-2fd73d20-1b77-4a64-81b2-a287182c6925.jpg"
+                alt="Stanley Park, Vancouver, taken by Mike Benna"
               />
               <div className="absolute inset-0 bg-[color:rgba(254,204,27,0.5)] mix-blend-multiply" />
             </div>
             <div className="relative px-4 pt-16 pb-8 sm:px-6 sm:pt-24 sm:pb-14 lg:px-8 lg:pb-20 lg:pt-32">
               <h1 className="text-center text-6xl font-extrabold tracking-tight sm:text-8xl lg:text-9xl">
                 <span className="block uppercase text-yellow-500 drop-shadow-md">
-                  Indie Stack
+                  Park Bot
                 </span>
               </h1>
               <p className="mx-auto mt-6 max-w-lg text-center text-xl text-white sm:max-w-3xl">
-                Check the README.md file for instructions on how to get this
-                project deployed.
+                Manage and moderate your community from a comfortable place
               </p>
               <div className="mx-auto mt-10 max-w-sm sm:flex sm:max-w-none sm:justify-center">
                 {user ? (
@@ -67,13 +66,6 @@ export default function Index() {
                   </div>
                 )}
               </div>
-              <a href="https://remix.run">
-                <img
-                  src="https://user-images.githubusercontent.com/1500684/158298926-e45dafff-3544-4b69-96d6-d3bcc33fc76a.svg"
-                  alt="Remix"
-                  className="mx-auto mt-16 w-full max-w-[12rem] md:max-w-[16rem]"
-                />
-              </a>
             </div>
           </div>
         </div>
@@ -136,6 +128,16 @@ export default function Index() {
                 alt: "TypeScript",
                 href: "https://typescriptlang.org",
               },
+              {
+                src: "https://user-images.githubusercontent.com/34061508/177764015-4cf8b107-6a0b-4272-ab8b-6226e374f767.png",
+                alt: "Remix",
+                href: "https://remix.run",
+              },
+              {
+                src: "https://user-images.githubusercontent.com/34061508/177764462-b4f8bcbb-1506-4580-b111-253f0aaacf6b.png",
+                alt: "Open Source Hub",
+                href: "https://opensourcehub.io/",
+              }
             ].map((img) => (
               <a
                 key={img.href}
