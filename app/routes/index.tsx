@@ -1,6 +1,28 @@
-import { Link } from "@remix-run/react";
+import type { LoaderFunction } from "@remix-run/node"
+import { useLoaderData, Link, Form } from "@remix-run/react"
+import { SocialsProvider } from "remix-auth-socials"
 
 import { useOptionalUser } from "~/utils";
+import { authenticator } from "~/auth.server"
+
+export const loader: LoaderFunction = async ({ request }) => {
+  const user = await authenticator.isAuthenticated(request, {
+    successRedirect: "/dashboard",
+  })
+  return user
+}
+
+interface SocialButtonProps {
+  provider: SocialsProvider,
+  label: string,
+  className: string,
+}
+
+const SocialButton: React.FC<SocialButtonProps> = ({ provider, label, className }) => (
+  <Form action={`/auth/${provider}`} method="post">
+    <button className={className}>{label}</button>
+  </Form>
+)
 
 export default function Index() {
   const user = useOptionalUser();
@@ -36,19 +58,12 @@ export default function Index() {
                     View Notes for {user.email}
                   </Link>
                 ) : (
-                  <div className="space-y-4 sm:mx-auto sm:inline-grid sm:grid-cols-2 sm:gap-5 sm:space-y-0">
-                    <Link
-                      to="/join"
-                      className="flex items-center justify-center rounded-md border border-transparent bg-white px-4 py-3 text-base font-medium text-yellow-700 shadow-sm hover:bg-yellow-50 sm:px-8"
-                    >
-                      Sign up
-                    </Link>
-                    <Link
-                      to="/login"
-                      className="flex items-center justify-center rounded-md bg-yellow-500 px-4 py-3 font-medium text-white hover:bg-yellow-600  "
-                    >
-                      Log In
-                    </Link>
+                  <div className="space-y-4 sm:mx-auto sm:inline-grid sm:grid-cols-1 sm:gap-5 sm:space-y-0">
+                    <SocialButton
+                      provider={SocialsProvider.DISCORD}
+                      label="Login with Discord"
+                      className="flex items-center justify-center rounded-md bg-yellow-500 px-4 py-3 font-medium text-white hover:bg-yellow-600"
+                    />
                   </div>
                 )}
               </div>
