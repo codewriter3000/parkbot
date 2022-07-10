@@ -2,6 +2,7 @@ import type { ActionFunction } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import { Form, useActionData } from "@remix-run/react";
 import * as React from "react";
+import { ParkbotButton } from "~/components/ParkbotButton";
 
 // import { createNote } from "~/models/note.server";
 // import { requireUserId } from "~/session.server";
@@ -92,25 +93,7 @@ export default function AddCommunityPage() {
           </select>
         </div>
         <div>
-        <button type="button" className="inline-block px-6 py-2.5
-        bg-indigo-600
-        text-white
-        font-medium
-        text-md
-        leading-tight
-        rounded
-        shadow-md
-        hover:bg-slate-700
-        hover:shadow-lg
-        focus:bg-slate-900
-        focus:shadow-lg
-        focus:outline-none
-        focus:ring-0
-        active:bg-slate-900
-        active:shadow-lg
-        transition
-        duration-150
-        ease-in-out">Invite discord bot</button>
+        <ParkbotButton text="Invite discord bot" bgcolor="red-600" />
         </div>
       </div>
 
