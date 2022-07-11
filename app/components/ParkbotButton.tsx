@@ -5,8 +5,8 @@ type ParkbotButtonProps = {
     bgcolor?: string
 }
 
-export const ParkbotButton: FunctionComponent<ParkbotButtonProps> = ({text, bgcolor = "indigo-600"}: ParkbotButtonProps) => <button type="button" className={`inline-block px-6 py-2.5
-bg-` + `${bgcolor} ` + `
+export const ParkbotButton: FunctionComponent<ParkbotButtonProps> = ({text, bgcolor = "bg-indigo-600"}: ParkbotButtonProps) => <button type="button"
+className={`inline-block px-6 py-2.5` + ` ${bgcolor} ` + `
 text-white
 font-medium
 text-md

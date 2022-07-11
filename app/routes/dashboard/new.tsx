@@ -93,7 +93,7 @@ export default function AddCommunityPage() {
           </select>
         </div>
         <div>
-        <ParkbotButton text="Invite discord bot" bgcolor="red-600" />
+        <ParkbotButton text="Invite discord bot" />
         </div>
       </div>
 

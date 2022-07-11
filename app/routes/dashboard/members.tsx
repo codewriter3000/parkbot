@@ -2,6 +2,7 @@ import type { ActionFunction } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import { Form, useActionData } from "@remix-run/react";
 import * as React from "react";
+import { ParkbotButton } from "~/components/ParkbotButton";
 
 // import { createNote } from "~/models/note.server";
 // import { requireUserId } from "~/session.server";
@@ -68,6 +69,8 @@ export default function AddCommunityPage() {
         Members
       </div>
 
+      
+
       <table className="table-auto">
         <thead>
             <tr>
@@ -82,7 +85,10 @@ export default function AddCommunityPage() {
                 <th>alex</th>
                 <th>baja blast#0001</th>
                 <th>197145017419169793</th>
-                <th></th>
+                <th>
+                  <ParkbotButton text="Mute" bgcolor="bg-yellow-600" />
+                  <ParkbotButton text="Ban" bgcolor="bg-red-600" />
+                </th>
             </tr>
         </tbody>
       </table>
