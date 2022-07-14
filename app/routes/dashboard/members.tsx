@@ -1,8 +1,9 @@
-import type { ActionFunction } from "@remix-run/node";
+import type { ActionFunction, LoaderFunction } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
-import { Form, useActionData } from "@remix-run/react";
+import { Form, useActionData, useLoaderData } from "@remix-run/react";
 import * as React from "react";
 import { ParkbotButton } from "~/components/ParkbotButton";
+import { MemberListRow } from "~/components/MemberListRow";
 
 // import { createNote } from "~/models/note.server";
 // import { requireUserId } from "~/session.server";
@@ -14,6 +15,12 @@ type ActionData = {
     title?: string;
     body?: string;
   };
+};
+
+export const loader: LoaderFunction = async () => {
+  return json([
+    { nickname: "alex", username: "baja blast#0001", userID: "197145017419169793" }
+  ]);
 };
 
 export const action: ActionFunction = async ({ request }) => {
@@ -39,6 +46,8 @@ export const action: ActionFunction = async ({ request }) => {
 
   //const note = await createNote({ title, body, userId });
 
+
+
   return redirect(`/dashboard`);
 };
 
@@ -46,6 +55,7 @@ export default function AddCommunityPage() {
   const actionData = useActionData() as ActionData;
   const titleRef = React.useRef<HTMLInputElement>(null);
   const bodyRef = React.useRef<HTMLTextAreaElement>(null);
+  const users = useLoaderData();
 
   React.useEffect(() => {
     if (actionData?.errors?.title) {
@@ -75,23 +85,19 @@ export default function AddCommunityPage() {
         <thead>
             <tr>
                 <th>Nickname</th>
-                <th>Username</th>
+                <th>Username</th> 
                 <th>User ID</th>
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <th>alex</th>
-                <th>baja blast#0001</th>
-                <th>197145017419169793</th>
-                <th>
-                  <ParkbotButton text="Mute" bgcolor="bg-yellow-600" />
-                  <ParkbotButton text="Ban" bgcolor="bg-red-600" />
-                </th>
-            </tr>
+          {users.map((user: any) => (
+            <MemberListRow key={user.username} nickname={user.nickname} username={user.username} userID={user.userID} />
+          ))}
         </tbody>
       </table>
     </Form>
   );
 }
+
+// localhost:3000/dashboard
