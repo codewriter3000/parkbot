@@ -19,7 +19,11 @@ type ActionData = {
 
 export const loader: LoaderFunction = async () => {
   return json([
-    { nickname: "alex", username: "baja blast#0001", userID: "197145017419169793" }
+    { nickname: "alex", username: "baja blast#0001", userID: "197145017419169793" },
+    { nickname: "Prefix the Pizza Man", username: "Prefix#3544", userID: "754891206177063042" },
+    { nickname: "FFFrenchman [VictimOf1984] 🇫🇷", username: "jostf#0424", userID: "445621472556220446" },
+    { nickname: "ForcedevilX 🇦🇺 [FDG]", username: "ForcedevilX#2549", userID: "544452118908502032" },
+    { nickname: "𝖂𝖔𝖑𝖋𝖗𝖆𝖒 | [ISTGC]", username: "WolfGang#2199", userID: "302514441982050304" },
   ]);
 };
 
@@ -76,18 +80,41 @@ export default function AddCommunityPage() {
       }}
     >
       <div className="text-center text-2xl py-4">
+        All 
         Members
       </div>
 
       
+      <div className="text-sm font-medium text-center text-gray-500">
+          <ul className="flex content-center gap-x-3">
+              <li className="mr-2">
+                  <a href="/dashboard/members" className="active inline-block p-4 rounded-t-lg border-b-2 border-transparent text-blue-600 border-blue-600">All Members</a>
+              </li>
+              <li className="mr-2">
+                  <a href="/dashboard/muted" className="inline-block p-4 rounded-t-lg border-b-2 border-transparent hover:border-yellow-400 hover:text-yellow-400">Muted</a>
+              </li>
+              <li className="mr-2">
+                  <a href="/dashboard/banned" className="inline-block p-4 rounded-t-lg border-b-2 border-transparent hover:border-red-600 hover:text-red-600">Banned</a>
+              </li>
+              <li>
+                  <a className="inline-block p-4 text-gray-400 rounded-t-lg cursor-not-allowed dark:text-gray-500">Administrators</a>
+              </li>
+          </ul>
+      </div>
 
-      <table className="table-auto">
+
+      {/* <div className="columns-3 text-center">
+        <div className="basis-1/3 border-solid border-2">Nickname</div>
+        <div className="basis-1/3 border-solid border-2">Username</div>
+        <div className="basis-1/3 border-solid border-2">User ID</div>
+      </div> */}
+
+      <table className="table-auto border-collapse border border-slate-500">
         <thead>
             <tr>
-                <th>Nickname</th>
-                <th>Username</th> 
-                <th>User ID</th>
-                <th>Actions</th>
+                <th className="border border-slate-300 pl-3 py-2 text-left">Nickname</th>
+                <th className="border border-slate-300 pl-3 py-2 text-left">Username</th> 
+                <th className="border border-slate-300 pl-3 py-2 text-left">User ID</th>
             </tr>
         </thead>
         <tbody>
