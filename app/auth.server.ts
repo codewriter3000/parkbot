@@ -10,7 +10,7 @@ invariant(process.env['DISCORD_CLIENT_SECRET'], 'DISCORD_CLIENT_SECRET is requir
 
 let address = 'http://localhost:3000'
 if (process.env.NODE_ENV === "production") {
-  invariant(process.env['FLY_APP_NAME'], 'FLY_APP_NAME is required')
+  invariant(process.env['FLY_APP_NAME'],'FLY_APP_NAME is required')
   address = `https://${process.env['FLY_APP_NAME']}.fly.dev`
 }
 
