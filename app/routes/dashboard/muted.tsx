@@ -4,6 +4,7 @@ import { Form, useActionData, useLoaderData } from "@remix-run/react";
 import * as React from "react";
 import { ParkbotButton } from "~/components/ParkbotButton";
 import { MemberListRow } from "~/components/MemberListRow";
+import { MemberListTable } from "~/components/MemberListTable";
 
 // import { createNote } from "~/models/note.server";
 // import { requireUserId } from "~/session.server";
@@ -101,27 +102,7 @@ export default function AddCommunityPage() {
           </ul>
       </div>
 
-
-      {/* <div className="columns-3 text-center">
-        <div className="basis-1/3 border-solid border-2">Nickname</div>
-        <div className="basis-1/3 border-solid border-2">Username</div>
-        <div className="basis-1/3 border-solid border-2">User ID</div>
-      </div> */}
-
-      <table className="table-auto border-collapse border border-slate-500">
-        <thead>
-            <tr>
-                <th className="border border-slate-300 pl-3 py-2 text-left">Nickname</th>
-                <th className="border border-slate-300 pl-3 py-2 text-left">Username</th> 
-                <th className="border border-slate-300 pl-3 py-2 text-left">User ID</th>
-            </tr>
-        </thead>
-        <tbody>
-          {users.map((user: any) => (
-            <MemberListRow key={user.username} nickname={user.nickname} username={user.username} userID={user.userID} />
-          ))}
-        </tbody>
-      </table>
+      <MemberListTable members={users} />
     </Form>
   );
 }
