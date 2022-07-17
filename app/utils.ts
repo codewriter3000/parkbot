@@ -45,7 +45,12 @@ export function useMatchesData(
 }
 
 function isUser(user: any): user is User {
-  return user && typeof user === "object" && typeof user.email === "string";
+  return (
+    user &&
+    typeof user === "object" &&
+    typeof user.discordId === "string" &&
+    typeof user.displayName === "string"
+  );
 }
 
 export function useOptionalUser(): User | undefined {

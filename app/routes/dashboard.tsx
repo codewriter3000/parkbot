@@ -1,22 +1,13 @@
-import type { LoaderFunction } from "@remix-run/node";
-import { Form, Link, NavLink, Outlet, useLoaderData } from "@remix-run/react";
+import { Form, Link, NavLink, Outlet } from "@remix-run/react";
 
-import { authenticator } from "~/auth.server";
-
-export let loader: LoaderFunction = async ({ request }) => {
-  const user = await authenticator.isAuthenticated(request, {
-    failureRedirect: "/",
-  });
-
-  return { user };
-};
+import { useUser } from "~/utils";
 
 export default function Dashboard() {
-  const { user } = useLoaderData();
+  const user = useUser();
 
   const data = {
-    noteListItems: [{ id: 'test', title: 'test community' }]
-  }
+    noteListItems: [{ id: "test", title: "test community" }],
+  };
 
   return (
     <div className="flex h-full min-h-screen flex-col">
@@ -68,5 +59,5 @@ export default function Dashboard() {
         </div>
       </main>
     </div>
-  )
-};
+  );
+}

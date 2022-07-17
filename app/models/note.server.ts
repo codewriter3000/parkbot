@@ -34,11 +34,7 @@ export function createNote({
     data: {
       title,
       body,
-      user: {
-        connect: {
-          id: userId,
-        },
-      },
+      userId,
     },
   });
 }
