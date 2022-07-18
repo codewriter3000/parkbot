@@ -1,25 +1,34 @@
 import { RemixBrowser } from '@remix-run/react';
-import { FunctionComponent, useState } from 'react';
+import { FunctionComponent, ReactEventHandler, useState } from 'react';
 
 type MemberListRowProps = {
     key: string
     nickname: string,
     username: string,
-    userID: string
+    userID: string,
+    onSelect: () => void,
+    onDeselect: () => void
 }
 
-export const MemberListRow: FunctionComponent<MemberListRowProps> = ({nickname, username, userID}: MemberListRowProps) => {
+export const MemberListRow: FunctionComponent<MemberListRowProps> = ({onSelect, onDeselect, nickname, username, userID}: MemberListRowProps) => {
     const [checkboxSelected, setSelection] = useState(false);
 
-    const handleChange = () => {
+    const handleCheckbox = () => {
         setSelection(!checkboxSelected);
+        if(!checkboxSelected){
+            onSelect();
+        } else {
+            onDeselect();
+        }
     };
     
-    return <tr className={checkboxSelected ? "bg-slate-200 hover:bg-slate-300 hover:cursor-pointer" : "hover:bg-slate-100 hover:cursor-pointer"} onClick={() => {
-        console.log({nickname});
-    }}>
+    return <tr className={checkboxSelected ? 
+        "bg-slate-200 hover:bg-slate-300 hover:cursor-pointer" : 
+        "hover:bg-slate-100 hover:cursor-pointer"} 
+        onClick={handleCheckbox}
+    >
         <td className="border border-slate-300 pl-3 py-1">
-            <input type="checkbox" checked={checkboxSelected} onChange={handleChange} />
+            <input type="checkbox" checked={checkboxSelected} onChange={handleCheckbox} />
         </td>
         <td className="border border-slate-300 pl-3 py-1">{nickname}</td>
         <td className="border border-slate-300 pl-3 py-1">{username}</td>

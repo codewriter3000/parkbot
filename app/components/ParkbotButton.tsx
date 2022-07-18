@@ -2,10 +2,11 @@ import type { FunctionComponent } from 'react';
 
 type ParkbotButtonProps = {
     text: string,
-    bgcolor?: string
+    bgcolor?: string,
+    action?: any
 }
 
-export const ParkbotButton: FunctionComponent<ParkbotButtonProps> = ({text, bgcolor = "bg-indigo-600"}: ParkbotButtonProps) => <button type="button"
+export const ParkbotButton: FunctionComponent<ParkbotButtonProps> = ({text, bgcolor = "bg-indigo-600", action = () => {}}: ParkbotButtonProps) => <button type="button"
 className={`inline-block px-6 py-2.5` + ` ${bgcolor} ` + `
 text-white
 font-medium
@@ -23,4 +24,4 @@ active:bg-slate-900
 active:shadow-lg
 transition
 duration-150
-ease-in-out`}>{ text }</button>
+ease-in-out`} onClick={action}>{ text }</button>

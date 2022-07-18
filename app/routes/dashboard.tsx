@@ -2,6 +2,7 @@ import type { LoaderFunction } from "@remix-run/node";
 import { Form, Link, NavLink, Outlet, useLoaderData } from "@remix-run/react";
 
 import { authenticator } from "~/auth.server";
+import { ParkbotButton } from "~/components/ParkbotButton";
 
 export let loader: LoaderFunction = async ({ request }) => {
   const user = await authenticator.isAuthenticated(request, {
@@ -21,9 +22,7 @@ export default function Dashboard() {
   return (
     <div className="flex h-full min-h-screen flex-col">
       <header className="flex items-center justify-between bg-slate-800 p-4 text-white">
-        <h1 className="text-3xl font-bold">
-          <Link to=".">Communities</Link>
-        </h1>
+        <ParkbotButton text="Toggle Communities" action={() => {}}/>
         <p>{user.displayName}</p>
         <Form action="/logout" method="post">
           <button
@@ -37,6 +36,9 @@ export default function Dashboard() {
 
       <main className="flex h-full bg-white">
         <div className="h-full w-80 border-r bg-gray-50">
+          <h1 className="text-3xl font-bold text-center block p-4 border-b">
+            <Link to=".">Communities</Link>
+          </h1>
           <Link to="new" className="block p-4 text-xl text-blue-500">
             + Add a community
           </Link>
