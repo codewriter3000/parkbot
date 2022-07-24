@@ -27,7 +27,8 @@ model DiscordUser {
 }
 
 model DiscordServer {
-  id String @id
+  id   String @id
+  name String
 
   admins  User[]
   members DiscordMember[]
