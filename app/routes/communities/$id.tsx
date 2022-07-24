@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Form, useLoaderData } from "@remix-run/react";
-import type { LoaderFunction } from "@remix-run/node";
+import type { ActionFunction, LoaderFunction } from "@remix-run/node";
 import invariant from "tiny-invariant";
 
 import { requireUser } from "~/auth.server";
@@ -99,6 +99,12 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   }
 
   return data;
+};
+
+export const action: ActionFunction = async ({ request }) => {
+  const formData = await request.formData();
+  console.log(formData);
+  return null;
 };
 
 export default function CommunityDetails() {
