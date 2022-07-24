@@ -48,8 +48,8 @@ function isUser(user: any): user is User {
   return (
     user &&
     typeof user === "object" &&
-    typeof user.discordId === "string" &&
-    typeof user.displayName === "string"
+    typeof user.discordUserId === "string" &&
+    typeof user.username === "string"
   );
 }
 

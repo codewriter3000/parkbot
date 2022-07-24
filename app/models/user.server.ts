@@ -1,4 +1,4 @@
-import type { User } from "@prisma/client";
+import type { User, DiscordUser } from "@prisma/client";
 
 import { prisma } from "~/db.server";
 
@@ -8,29 +8,62 @@ export async function getUserById(id: User["id"]) {
   return prisma.user.findUnique({ where: { id } });
 }
 
-// Find a user with its discord id
-// Create user if it doesn't exist
-// Update its display name if it changed
-export async function getMatchingUser(
-  discordId: User["discordId"],
-  displayName: User["displayName"]
+export async function getUserByDiscordData(
+  discordUserId: string,
+  displayName: string
 ) {
+  const discordUser = await getDiscordUser(discordUserId, displayName);
   const user = await prisma.user.findUnique({
-    where: { discordId },
+    where: { discordUserId: discordUser.id },
   });
+
   if (user == null) {
-    return prisma.user.create({
+    return await prisma.user.create({
       data: {
-        discordId,
+        username: discordUser.displayName,
+        discord: {
+          connect: {
+            id: discordUser.id,
+          },
+        },
+      },
+    });
+  }
+
+  if (user.username != discordUser.displayName) {
+    return await prisma.user.update({
+      where: { id: user.id },
+      data: { username: discordUser.displayName },
+    });
+  }
+
+  return user;
+}
+
+// Find, update, create a discord user matching the id
+export async function getDiscordUser(
+  id: DiscordUser["id"],
+  displayName: DiscordUser["displayName"]
+) {
+  const discordUser = await prisma.discordUser.findUnique({
+    where: { id },
+  });
+
+  if (discordUser == null) {
+    return await prisma.discordUser.create({
+      data: {
+        id,
         displayName,
       },
     });
   }
-  if (user.displayName !== displayName) {
-    prisma.user.update({
-      where: { id: user.id },
+
+  if (discordUser.displayName !== displayName) {
+    return await prisma.discordUser.update({
+      where: { id },
       data: { displayName },
     });
   }
-  return user;
+
+  return discordUser;
 }

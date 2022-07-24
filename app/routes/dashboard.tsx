@@ -1,6 +1,12 @@
 import { Form, Link, NavLink, Outlet } from "@remix-run/react";
+import type { LoaderFunction } from "@remix-run/node";
 
 import { useUser } from "~/utils";
+import { requireUser } from "~/auth.server";
+
+export const loader: LoaderFunction = async ({ request }) => {
+  return requireUser(request);
+};
 
 export default function Dashboard() {
   const user = useUser();
@@ -15,7 +21,7 @@ export default function Dashboard() {
         <h1 className="text-3xl font-bold">
           <Link to=".">Communities</Link>
         </h1>
-        <p>{user.displayName}</p>
+        <p>{user.username}</p>
         <Form action="/logout" method="post">
           <button
             type="submit"
