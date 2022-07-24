@@ -1,13 +1,18 @@
-import type { ActionFunction } from "@remix-run/node";
-import { json, redirect } from "@remix-run/node";
+import type { ActionFunction, LoaderFunction } from "@remix-run/node";
+import { redirect } from "@remix-run/node";
 import { Form, useActionData } from "@remix-run/react";
 import * as React from "react";
 import { ParkbotButton } from "~/components/ParkbotButton";
+import { requireUser } from "~/auth.server";
 
 // import { createNote } from "~/models/note.server";
 // import { requireUserId } from "~/session.server";
 
 // import { authenticator } from "~/auth.server"
+
+export const loader: LoaderFunction = async ({ request }) => {
+  return requireUser(request);
+};
 
 type ActionData = {
   errors?: {
@@ -39,10 +44,10 @@ export const action: ActionFunction = async ({ request }) => {
 
   //const note = await createNote({ title, body, userId });
 
-  return redirect(`/dashboard`);
+  return redirect(`/communities`);
 };
 
-export default function AddCommunityPage() {
+export default function CommunityAdd() {
   const actionData = useActionData() as ActionData;
   const titleRef = React.useRef<HTMLInputElement>(null);
   const bodyRef = React.useRef<HTMLTextAreaElement>(null);
@@ -65,15 +70,18 @@ export default function AddCommunityPage() {
         width: "100%",
       }}
     >
-      <div>
-        Add a community to parkbot
-      </div>
+      <div>Add a community to parkbot</div>
 
       <div className="grid grid-rows-2 grid-flow-col gap-4 py-4">
-        <div>1. <em>Select community type</em></div>
-        <div>2. <em>Link parkbot to community</em></div>
         <div>
-          <select className="form-select appearance-none
+          1. <em>Select community type</em>
+        </div>
+        <div>
+          2. <em>Link parkbot to community</em>
+        </div>
+        <div>
+          <select
+            className="form-select appearance-none
             block
             w-full
             px-3
@@ -88,12 +96,13 @@ export default function AddCommunityPage() {
             ease-in-out
             m-0
             focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-            aria-label="Default select example">
+            aria-label="Default select example"
+          >
             <option>Discord</option>
           </select>
         </div>
         <div>
-        <ParkbotButton text="Invite discord bot" />
+          <ParkbotButton text="Invite discord bot" />
         </div>
       </div>
 

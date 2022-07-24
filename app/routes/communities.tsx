@@ -8,7 +8,7 @@ export const loader: LoaderFunction = async ({ request }) => {
   return requireUser(request);
 };
 
-export default function Dashboard() {
+export default function Communities() {
   const user = useUser();
 
   const data = {
