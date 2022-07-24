@@ -4,16 +4,18 @@ import { ParkbotButton } from "./ParkbotButton";
 
 type MemberListTableProps = {
     members: Array<Object>,
-    accentColor: string
+    accentColor: string,
+    tableType: string,
 }
 
-export const MemberListTable: FunctionComponent<MemberListTableProps> = ({members, accentColor}: MemberListTableProps) => {
+export const MemberListTable: FunctionComponent<MemberListTableProps> = (
+    {members, accentColor, tableType}: MemberListTableProps) => {
     const [selectedRows, setSelectedRows] = useState<string[]>([]);
     
     return  <>
-                <div className="relative">
+                <div>
                     {accentColor === "purple" ? 
-                        <>
+                        <div className="flex gap-1">
                             <input type="search" id="default-search" 
                             className="inline-block text-sm text-gray-900 bg-gray-50 
                             rounded-lg border border-gray-300 focus:ring-blue-600 
@@ -30,9 +32,9 @@ export const MemberListTable: FunctionComponent<MemberListTableProps> = ({member
                                     stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                                 </svg>
                             </button>
-                        </>
+                        </div>
                     : accentColor === "yellow" ?
-                        <>
+                        <div className="flex gap-1">
                             <input type="search" id="default-search" 
                             className="inline-block text-sm text-gray-900 bg-gray-50 
                             rounded-lg border border-gray-300 focus:ring-yellow-400 
@@ -50,9 +52,9 @@ export const MemberListTable: FunctionComponent<MemberListTableProps> = ({member
                                     stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                                 </svg>
                             </button>
-                        </>
+                        </div>
                     : accentColor === "red" ?
-                        <>
+                        <div className="flex gap-1">
                             <input type="search" id="default-search" 
                             className="inline-block text-sm text-gray-900 bg-gray-50 
                             rounded-lg border border-gray-300 focus:ring-red-600 
@@ -69,10 +71,9 @@ export const MemberListTable: FunctionComponent<MemberListTableProps> = ({member
                                     stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                                 </svg>
                             </button>
-                        </>
-                         : <></>
+                        </div>
+                    : <></>
                     }
-                    
                 </div>
                 <table className="table-auto border-collapse border border-slate-500">
                     <thead>
@@ -97,10 +98,24 @@ export const MemberListTable: FunctionComponent<MemberListTableProps> = ({member
                     </tbody>
                 </table>
                 {selectedRows.length === 0 ? <></> : 
-                <div className="gap-x-6">
-                    <ParkbotButton text="Mute" bgcolor="bg-yellow-500" />
-                    <ParkbotButton text="Ban" bgcolor="bg-red-600" />
-                </div>
+                <>
+                    {tableType === "members" ? 
+                        <div className="flex gap-1">
+                            <ParkbotButton text="Mute" bgcolor="bg-yellow-500" />
+                            <ParkbotButton text="Ban" bgcolor="bg-red-600" />
+                        </div>
+                    : tableType === "muted" ?
+                        <div className="flex gap-1">
+                            <ParkbotButton text="Change Mute" bgcolor="bg-yellow-500" />
+                            <ParkbotButton text="Ban" bgcolor="bg-red-600" />
+                        </div>
+                    : tableType === "banned" ?
+                        <div className="flex gap-1">
+                            <ParkbotButton text="Unban" bgcolor="bg-red-600" />
+                        </div>
+                    : <></>
+                    }
+                </>
                 }
             </>
 }
