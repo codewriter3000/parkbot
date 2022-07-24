@@ -1,14 +1,109 @@
 import * as React from "react";
-import { Form } from "@remix-run/react";
+import { Form, useLoaderData } from "@remix-run/react";
 import type { LoaderFunction } from "@remix-run/node";
+import invariant from "tiny-invariant";
 
 import { requireUser } from "~/auth.server";
+import { MemberListRow } from "~/components/MemberListRow";
 
-export const loader: LoaderFunction = async ({ request }) => {
-  return requireUser(request);
+// Should be in backend file
+type Optional<T, K extends keyof T> = Pick<Partial<T>, K> & Omit<T, K>;
+type Member = Optional<
+  {
+    id: string;
+    username: string;
+    nickname: string;
+
+    muted: boolean;
+    mutedSince: Date | undefined;
+    mutedDuration: number | undefined;
+    banned: boolean;
+  },
+  "mutedSince" | "mutedDuration"
+>;
+
+type LoaderData = {
+  community: {
+    id: string;
+    name: string;
+  }; // should be imported from backend file
+  members: Member[];
+  listToDisplay: "members" | "muted" | "banned" | "admins";
+};
+
+export const loader: LoaderFunction = async ({ request, params }) => {
+  await requireUser(request);
+  invariant(params.id, "Community id is required");
+
+  // get community details by id
+  // if not found, throw 404
+  // if user is not admin of community, throw 404 or 403
+  const community = {
+    id: "1",
+    name: "Dummy community",
+  };
+
+  const url = new URL(request.url);
+  const listToDisplay = url.searchParams.get("display") || "members";
+  if (
+    listToDisplay != "members" &&
+    listToDisplay != "muted" &&
+    listToDisplay != "banned" &&
+    listToDisplay != "admins"
+  ) {
+    throw new Response(`Unknown list to display: ${listToDisplay}`, {
+      status: 400,
+    });
+  }
+
+  let data: LoaderData = {
+    community,
+    members: [],
+    listToDisplay,
+  };
+
+  const dummyMembers: Member[] = [
+    {
+      id: "1",
+      username: "user1",
+      nickname: "User 1",
+      muted: false,
+      banned: false,
+    },
+    {
+      id: "2",
+      username: "user2",
+      nickname: "User 2",
+      muted: false,
+      banned: false,
+    },
+  ];
+
+  switch (listToDisplay) {
+    case "members":
+      // get members
+      data.members = dummyMembers;
+      break;
+    case "muted":
+      // get muted members
+      data.members = dummyMembers;
+      break;
+    case "banned":
+      // get banned members
+      data.members = dummyMembers;
+      break;
+    case "admins":
+      // get admins
+      data.members = dummyMembers;
+      break;
+  }
+
+  return data;
 };
 
 export default function CommunityDetails() {
+  const data = useLoaderData<LoaderData>();
+
   return (
     <Form
       method="post"
@@ -25,30 +120,49 @@ export default function CommunityDetails() {
         <ul className="flex content-center gap-x-3">
           <li className="mr-2">
             <a
-              href="/communities/members"
-              className="active inline-block p-4 rounded-t-lg border-b-2 border-transparent text-blue-600 border-blue-600"
+              href="?display=members"
+              className={`${
+                data.listToDisplay == "members"
+                  ? "active text-blue-600 border-blue-600"
+                  : "hover:text-blue-600 hover:border-blue-600"
+              } inline-block p-4 rounded-t-lg border-b-2 border-transparent`}
             >
               All Members
             </a>
           </li>
           <li className="mr-2">
             <a
-              href="/communities/muted"
-              className="inline-block p-4 rounded-t-lg border-b-2 border-transparent hover:border-yellow-400 hover:text-yellow-400"
+              href="?display=muted"
+              className={`${
+                data.listToDisplay == "muted"
+                  ? "active text-yellow-400 border-yellow-400"
+                  : "hover:text-yellow-400 hover:border-yellow-400"
+              } inline-block p-4 rounded-t-lg border-b-2 border-transparent`}
             >
               Muted
             </a>
           </li>
           <li className="mr-2">
             <a
-              href="/communities/banned"
-              className="inline-block p-4 rounded-t-lg border-b-2 border-transparent hover:border-red-600 hover:text-red-600"
+              href="?display=banned"
+              className={`${
+                data.listToDisplay == "banned"
+                  ? "active text-red-600 border-red-600"
+                  : "hover:text-red-600 hover:border-red-600"
+              } inline-block p-4 rounded-t-lg border-b-2 border-transparent`}
             >
               Banned
             </a>
           </li>
           <li>
-            <a className="inline-block p-4 text-gray-400 rounded-t-lg cursor-not-allowed dark:text-gray-500">
+            <a
+              href="?display=admins"
+              className={`${
+                data.listToDisplay == "admins"
+                  ? "active text-green-600 border-green-600"
+                  : "hover:text-green-600 hover:border-green-600"
+              } inline-block p-4 rounded-t-lg border-b-2 border-transparent`}
+            >
               Administrators
             </a>
           </li>
@@ -69,7 +183,16 @@ export default function CommunityDetails() {
             </th>
           </tr>
         </thead>
-        <tbody></tbody>
+        <tbody>
+          {data.members.map((member: any) => (
+            <MemberListRow
+              key={member.id}
+              nickname={member.nickname}
+              username={member.username}
+              userID={member.id}
+            />
+          ))}
+        </tbody>
       </table>
     </Form>
   );

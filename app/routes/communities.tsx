@@ -1,19 +1,23 @@
-import { Form, Link, NavLink, Outlet } from "@remix-run/react";
+import { Form, Link, NavLink, Outlet, useLoaderData } from "@remix-run/react";
 import type { LoaderFunction } from "@remix-run/node";
 
 import { useUser } from "~/utils";
 import { requireUser } from "~/auth.server";
 
+type LoaderData = {
+  id: string;
+  name: string;
+}[];
+
 export const loader: LoaderFunction = async ({ request }) => {
-  return requireUser(request);
+  await requireUser(request);
+  // get community list for user
+  return [{ id: "1", name: "Dummy community" }];
 };
 
 export default function Communities() {
   const user = useUser();
-
-  const data = {
-    noteListItems: [{ id: "test", title: "test community" }],
-  };
+  const data = useLoaderData<LoaderData>();
 
   return (
     <div className="flex h-full min-h-screen flex-col">
@@ -40,19 +44,19 @@ export default function Communities() {
 
           <hr />
 
-          {data.noteListItems.length === 0 ? (
+          {data.length === 0 ? (
             <p className="p-4">No communities yet</p>
           ) : (
             <ol>
-              {data.noteListItems.map((note) => (
-                <li key={note.id}>
+              {data.map((community) => (
+                <li key={community.id}>
                   <NavLink
                     className={({ isActive }) =>
                       `block border-b p-4 text-xl ${isActive ? "bg-white" : ""}`
                     }
-                    to={note.id}
+                    to={community.id}
                   >
-                    {note.title}
+                    {community.name}
                   </NavLink>
                 </li>
               ))}
