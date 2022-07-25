@@ -103,7 +103,7 @@ export default function AddCommunityPage() {
           </ul>
       </div>
 
-      <MemberListTable members={users} accentColor="purple" tableType="members" />
+      <MemberListTable members={users} accentColor="green" tableType="members" />
     </Form>
   );
 }
