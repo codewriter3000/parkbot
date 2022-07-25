@@ -2,7 +2,7 @@ import { RemixBrowser } from '@remix-run/react';
 import { FunctionComponent, ReactEventHandler, useState } from 'react';
 
 type MemberListRowProps = {
-    key: string
+    key: number
     nickname: string,
     username: string,
     userID: string,

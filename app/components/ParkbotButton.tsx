@@ -1,27 +1,21 @@
-import type { FunctionComponent } from 'react';
+import type { ButtonHTMLAttributes, DetailedHTMLProps, FunctionComponent } from 'react';
 
 type ParkbotButtonProps = {
     text: string,
     bgcolor?: string,
-    action?: any
+    action?: any,
+    dataBsToggle?: any,
+    dataBsTarget?: string,
 }
 
-export const ParkbotButton: FunctionComponent<ParkbotButtonProps> = ({text, bgcolor = "bg-indigo-600", action = () => {}}: ParkbotButtonProps) => <button type="button"
+export const ParkbotButton: FunctionComponent<ParkbotButtonProps> = ({text, bgcolor = "bg-green-700", action = () => {}, dataBsToggle, dataBsTarget}: ParkbotButtonProps) => <button type="button"
 className={`inline-block px-6 py-2.5` + ` ${bgcolor} ` + `
 text-white
-font-medium
-text-md
-leading-tight
 rounded
 shadow-md
 hover:bg-slate-700
 hover:shadow-lg
-focus:bg-slate-900
-focus:shadow-lg
-focus:outline-none
-focus:ring-0
 active:bg-slate-900
 active:shadow-lg
-transition
-duration-150
-ease-in-out`} onClick={action}>{ text }</button>
+transition`} onClick={action}
+>{ text }</button>

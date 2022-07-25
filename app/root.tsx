@@ -13,11 +13,13 @@ import {
   ScrollRestoration,
 } from "@remix-run/react";
 
+import parkbotStylesheetUrl from "./styles/parkbot.css";
 import tailwindStylesheetUrl from "./styles/tailwind.css";
 import { getUser } from "./session.server";
 
 export const links: LinksFunction = () => {
-  return [{ rel: "stylesheet", href: tailwindStylesheetUrl }];
+  return [{ rel: "stylesheet", href: tailwindStylesheetUrl },
+          { rel: "stylesheet", href: parkbotStylesheetUrl }];
 };
 
 export const meta: MetaFunction = () => ({

@@ -89,7 +89,7 @@ export default function AddCommunityPage() {
       <div className="text-sm font-medium text-center text-gray-500">
           <ul className="flex content-center gap-x-3">
               <li className="mr-2">
-                  <a href="/dashboard/members" className="active inline-block p-4 rounded-t-lg border-b-2 border-transparent text-blue-600 border-blue-600">All Members</a>
+                  <a href="/dashboard/members" className="active inline-block p-4 rounded-t-lg border-b-2 border-transparent text-green-700 border-green-700">All Members</a>
               </li>
               <li className="mr-2">
                   <a href="/dashboard/muted" className="inline-block p-4 rounded-t-lg border-b-2 border-transparent hover:border-yellow-400 hover:text-yellow-400">Muted</a>

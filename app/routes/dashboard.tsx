@@ -22,7 +22,8 @@ export default function Dashboard() {
   return (
     <div className="flex h-full min-h-screen flex-col">
       <header className="flex items-center justify-between bg-slate-800 p-4 text-white">
-        <ParkbotButton text="Toggle Communities" action={() => {}}/>
+        <button className={"button"}>Toggle Communities</button>
+        {/* <ParkbotButton text="Toggle Communities" action={() => {}}/> */}
         <p>{user.displayName}</p>
         <Form action="/logout" method="post">
           <button
@@ -39,7 +40,7 @@ export default function Dashboard() {
           <h1 className="text-3xl font-bold text-center block p-4 border-b">
             <Link to=".">Communities</Link>
           </h1>
-          <Link to="new" className="block p-4 text-xl text-blue-500">
+          <Link to="new" className="block p-4 text-xl text-green-700">
             + Add a community
           </Link>
 
