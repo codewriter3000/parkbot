@@ -2,8 +2,6 @@ import type { ActionFunction, LoaderFunction } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import { Form, useActionData, useLoaderData } from "@remix-run/react";
 import * as React from "react";
-import { ParkbotButton } from "~/components/ParkbotButton";
-import { MemberListRow } from "~/components/MemberListRow";
 import { MemberListTable } from "~/components/MemberListTable";
 
 // import { createNote } from "~/models/note.server";
@@ -25,6 +23,28 @@ export const loader: LoaderFunction = async () => {
     { nickname: "FFFrenchman [VictimOf1984] 🇫🇷", username: "jostf#0424", userID: "445621472556220446" },
     { nickname: "ForcedevilX 🇦🇺 [FDG]", username: "ForcedevilX#2549", userID: "544452118908502032" },
     { nickname: "𝖂𝖔𝖑𝖋𝖗𝖆𝖒 | [ISTGC]", username: "WolfGang#2199", userID: "302514441982050304" },
+    { nickname: "!TheSticky-[FDG]", username: "!⛧TheSticky⛧#4205", userID: "447571110406389762" },
+    { nickname: "Electric Lizard", username: "Electric Lizard#0324", userID: "917295045978226718" },
+    { nickname: "King Anazang [ZNG]", username: "Anazang#0511", userID: "312756102913851393" },
+    { nickname: "Pillowcase 🇺🇸 🌈", username: "Pillowcase#2156", userID: "171032390167166976" },
+    { nickname: "tinylion", username: "tinylion#1046", userID: "735762334081089596" },
+    { nickname: "Otto", username: "Otto#9313", userID: "164884933972721665" },
+    { nickname: "Punk the Revolutionary", username: "BansheeBoiii#4890", userID: "458361142318727183" },
+    { nickname: "Lewi", username: "kklewi#2911", userID: "510590139085488128" },
+    { nickname: "itótele", username: "itótele#0047", userID: "796212003848323112" },
+    { nickname: "sneakochat", username: "sneak#2972", userID: "675957822055251969" },
+    { nickname: "๏̯͡๏ FεⱠⱠ₳r", username: "Fellar#5115", userID: "286882665414656000" },
+    { nickname: "DanteTactics", username: "DanteTactics#5049", userID: "429745031973437442" },
+    { nickname: "Magpie (Charlie)", username: "Magpie The Great#3030", userID: "823306121300672532" },
+    { nickname: "mur.maria", username: "mariauwu#4943", userID: "984390534921596938" },
+    { nickname: "Beetlejuice", username: "Beetlejuice#6054", userID: "738792295062569042" },
+    { nickname: "detroyer", username: "detroyer#1952", userID: "292797656344821762" },
+    { nickname: "infl0w", username: "infl0w#7137", userID: "213534403459022848" },
+    { nickname: "Jillybillysillydillynillychilli", username: "Jillybillysillydillynillychilli#9209", userID: "629746673605804043" },
+    { nickname: "Konnor88", username: "Konnor88#0001", userID: "434491690632347659" },
+    { nickname: "Nea", username: "Nea#0182", userID: "236590563711778816" },
+    { nickname: "PENTAGON1st", username: "PENTAGON1st#7318", userID: "894213735890178100" },
+    { nickname: "tatsu", username: "tatsu#8794", userID: "225205222660636674" },
   ]);
 };
 

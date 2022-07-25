@@ -4,7 +4,7 @@ import { ExclamationIcon } from '@heroicons/react/outline';
 import { Form } from '@remix-run/react';
 import TimeUnitDropdown from './TimeUnitDropdown';
 
-export default function MuteModal() {
+export default function ChangeMuteModal() {
   const [open, setOpen] = useState(true);
 
   const cancelButtonRef = useRef(null);

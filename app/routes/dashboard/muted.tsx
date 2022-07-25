@@ -2,8 +2,6 @@ import type { ActionFunction, LoaderFunction } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import { Form, useActionData, useLoaderData } from "@remix-run/react";
 import * as React from "react";
-import { ParkbotButton } from "~/components/ParkbotButton";
-import { MemberListRow } from "~/components/MemberListRow";
 import { MemberListTable } from "~/components/MemberListTable";
 
 // import { createNote } from "~/models/note.server";
@@ -20,11 +18,12 @@ type ActionData = {
 
 export const loader: LoaderFunction = async () => {
   return json([
-    { nickname: "alex", username: "baja blast#0001", userID: "197145017419169793" },
     { nickname: "Prefix the Pizza Man", username: "Prefix#3544", userID: "754891206177063042" },
-    { nickname: "FFFrenchman [VictimOf1984] 🇫🇷", username: "jostf#0424", userID: "445621472556220446" },
     { nickname: "ForcedevilX 🇦🇺 [FDG]", username: "ForcedevilX#2549", userID: "544452118908502032" },
     { nickname: "𝖂𝖔𝖑𝖋𝖗𝖆𝖒 | [ISTGC]", username: "WolfGang#2199", userID: "302514441982050304" },
+    { nickname: "Otto", username: "Otto#9313", userID: "164884933972721665" },
+    { nickname: "sneakochat", username: "sneak#2972", userID: "675957822055251969" },
+    { nickname: "tatsu", username: "tatsu#8794", userID: "225205222660636674" },
   ]);
 };
 
@@ -97,7 +96,7 @@ export default function AddCommunityPage() {
                   <a href="/dashboard/banned" className="inline-block p-4 rounded-t-lg border-b-2 border-transparent hover:border-red-600 hover:text-red-600">Banned</a>
               </li>
               <li>
-                  <a className="inline-block p-4 text-gray-400 rounded-t-lg cursor-not-allowed dark:text-gray-500">Administrators</a>
+                  <a href="#" className="inline-block p-4 text-gray-400 rounded-t-lg cursor-not-allowed dark:text-gray-500">Administrators</a>
               </li>
           </ul>
       </div>
