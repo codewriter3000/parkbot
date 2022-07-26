@@ -1,13 +1,22 @@
-import type { FunctionComponent } from 'react';
+import type { FunctionComponent } from "react";
 
 type ParkbotButtonProps = {
-    text: string,
-    bgcolor?: string,
-    action?: any
-}
+  text: string;
+  bgcolor?: string;
+  action?: any;
+};
 
-export const ParkbotButton: FunctionComponent<ParkbotButtonProps> = ({text, bgcolor = "bg-indigo-600", action = () => {}}: ParkbotButtonProps) => <button type="button"
-className={`inline-block px-6 py-2.5` + ` ${bgcolor} ` + `
+export const ParkbotButton: FunctionComponent<ParkbotButtonProps> = ({
+  text,
+  bgcolor = "bg-indigo-600",
+  action = () => {},
+}: ParkbotButtonProps) => (
+  <button
+    type="button"
+    className={
+      `inline-block px-6 py-2.5` +
+      ` ${bgcolor} ` +
+      `
 text-white
 font-medium
 text-md
@@ -24,4 +33,10 @@ active:bg-slate-900
 active:shadow-lg
 transition
 duration-150
-ease-in-out`} onClick={action}>{ text }</button>
+ease-in-out`
+    }
+    onClick={action}
+  >
+    {text}
+  </button>
+);

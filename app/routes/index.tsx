@@ -1,29 +1,26 @@
-import type { LoaderFunction } from "@remix-run/node"
-import { useLoaderData, Link, Form } from "@remix-run/react"
-import { SocialsProvider } from "remix-auth-socials"
+import { Link, Form } from "@remix-run/react";
+import { SocialsProvider } from "remix-auth-socials";
 
 import { useOptionalUser } from "~/utils";
-import { authenticator } from "~/auth.server"
-
-export const loader: LoaderFunction = async ({ request }) => {
-  const user = await authenticator.isAuthenticated(request)
-  return user
-}
 
 interface SocialButtonProps {
-  provider: SocialsProvider,
-  label: string,
-  className: string,
+  provider: SocialsProvider;
+  label: string;
+  className: string;
 }
 
-const SocialButton: React.FC<SocialButtonProps> = ({ provider, label, className }) => (
+const SocialButton: React.FC<SocialButtonProps> = ({
+  provider,
+  label,
+  className,
+}) => (
   <Form action={`/auth/${provider}`} method="post">
     <button className={className}>{label}</button>
   </Form>
-)
+);
 
 export default function Index() {
-  const user = useLoaderData()
+  const user = useOptionalUser();
   return (
     <main className="relative min-h-screen bg-white sm:flex sm:items-center sm:justify-center">
       <div className="relative sm:pb-16 sm:pt-8">
@@ -49,7 +46,7 @@ export default function Index() {
               <div className="mx-auto mt-10 max-w-sm sm:flex sm:max-w-none sm:justify-center">
                 {user ? (
                   <Link
-                    to="/dashboard"
+                    to="/communities"
                     className="flex items-center justify-center rounded-md border border-transparent bg-white px-4 py-3 text-base font-medium text-yellow-700 shadow-sm hover:bg-yellow-50 sm:px-8"
                   >
                     Go to dashboard
@@ -140,7 +137,7 @@ export default function Index() {
                 src: "https://user-images.githubusercontent.com/34061508/177764462-b4f8bcbb-1506-4580-b111-253f0aaacf6b.png",
                 alt: "Open Source Hub",
                 href: "https://opensourcehub.io/",
-              }
+              },
             ].map((img) => (
               <a
                 key={img.href}
