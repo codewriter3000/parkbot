@@ -100,7 +100,15 @@ async function seed() {
               },
             },
             nickname: user.displayName + " (nickname)",
-            banned: false,
+            muted:
+              user.id === "2"
+                ? {
+                    create: {
+                      duration: 10000000,
+                    },
+                  }
+                : undefined,
+            banned: user.id === "3",
           };
         }),
       },
