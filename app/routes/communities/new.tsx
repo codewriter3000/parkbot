@@ -1,64 +1,43 @@
 import type { ActionFunction, LoaderFunction } from "@remix-run/node";
 import { redirect } from "@remix-run/node";
-import { Form, useActionData } from "@remix-run/react";
+import { Form, useSubmit } from "@remix-run/react";
 import * as React from "react";
+
 import { ParkbotButton } from "~/components/ParkbotButton";
 import { requireUser } from "~/auth.server";
-
-// import { createNote } from "~/models/note.server";
-// import { requireUserId } from "~/session.server";
-
-// import { authenticator } from "~/auth.server"
+import { createCommunity } from "~/models/discord.server";
 
 export const loader: LoaderFunction = async ({ request }) => {
-  return requireUser(request);
-};
-
-type ActionData = {
-  errors?: {
-    title?: string;
-    body?: string;
-  };
+  await requireUser(request);
+  return null;
 };
 
 export const action: ActionFunction = async ({ request }) => {
-  //const userId = await requireUserId(request);
+  const user = await requireUser(request);
+  const formData = await request.formData();
+  const name = formData.get("name")?.toString();
 
-  //const formData = await request.formData();
-  //const title = formData.get("title");
-  //const body = formData.get("body");
-
-  //if (typeof title !== "string" || title.length === 0) {
-  //  return json<ActionData>(
-  //    { errors: { title: "Title is required" } },
-  //    { status: 400 }
-  //  );
-  //}
-
-  //if (typeof body !== "string" || body.length === 0) {
-  //  return json<ActionData>(
-  //    { errors: { body: "Body is required" } },
-  //    { status: 400 }
-  //  );
-  //}
-
-  //const note = await createNote({ title, body, userId });
-
-  return redirect(`/communities`);
+  if (name == null) {
+    return redirect(`/communities`);
+  }
+  const community = await createCommunity(name, user);
+  return redirect(`/communities/${community.id}`);
 };
 
 export default function CommunityAdd() {
-  const actionData = useActionData() as ActionData;
-  const titleRef = React.useRef<HTMLInputElement>(null);
-  const bodyRef = React.useRef<HTMLTextAreaElement>(null);
+  const submit = useSubmit();
 
-  React.useEffect(() => {
-    if (actionData?.errors?.title) {
-      titleRef.current?.focus();
-    } else if (actionData?.errors?.body) {
-      bodyRef.current?.focus();
+  function createFakeCommunity() {
+    const name = prompt("Name of the community");
+    if (name) {
+      const formData = new FormData();
+      formData.set("name", name);
+      submit(formData, {
+        method: "post",
+        action: "/communities/new",
+      });
     }
-  }, [actionData]);
+  }
 
   return (
     <Form
@@ -101,7 +80,7 @@ export default function CommunityAdd() {
             <option>Discord</option>
           </select>
         </div>
-        <div>
+        <div onClick={createFakeCommunity}>
           <ParkbotButton text="Invite discord bot" />
         </div>
       </div>
@@ -116,45 +95,6 @@ export default function CommunityAdd() {
           Close
         </button>
       </div>
-
-      {/* <div>
-        <label className="flex w-full flex-col gap-1">
-          <span>Title: </span>
-          <input
-            ref={titleRef}
-            name="title"
-            className="flex-1 rounded-md border-2 border-blue-500 px-3 text-lg leading-loose"
-            aria-invalid={actionData?.errors?.title ? true : undefined}
-            aria-errormessage={
-              actionData?.errors?.title ? "title-error" : undefined
-            }
-          />
-        </label>
-        {actionData?.errors?.title && (
-          <div className="pt-1 text-red-700" id="title-error">
-            {actionData.errors.title}
-          </div>
-        )}
-      </div>
-
-      <div>
-        <label className="flex w-full flex-col gap-1">
-          <span>Body: </span>
-          <textarea
-            ref={bodyRef}
-            name="body"
-            rows={8}
-            className="w-full flex-1 rounded-md border-2 border-blue-500 py-2 px-3 text-lg leading-6"
-            aria-invalid={actionData?.errors?.body ? true : undefined}
-            aria-errormessage={
-              actionData?.errors?.body ? "body-error" : undefined
-            }
-          />
-        </label>
-        {actionData?.errors?.body && (<div className="pt-1 text-red-700" id="body-error"> {actionData.errors.body}
-        </div>
-        )}
-      </div> */}
     </Form>
   );
 }

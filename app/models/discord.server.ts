@@ -1,6 +1,7 @@
 import type { User } from "@prisma/client";
 
 import { prisma } from "~/db.server";
+import { randomInt } from "crypto";
 
 export type Community = {
   id: string;
@@ -125,4 +126,34 @@ export async function getCommunityMembers(
     mutedDuration: member.muted?.duration,
     banned: member.banned,
   }));
+}
+
+export async function createCommunity(
+  name: string,
+  admin: User
+): Promise<Community> {
+  const users = await prisma.discordUser.findMany();
+
+  const server = await prisma.discordServer.create({
+    data: {
+      id: randomInt(0, 1000000).toString(),
+      name,
+      admins: {
+        connect: {
+          id: admin.id,
+        },
+      },
+      members: {
+        create: users.map((user) => ({
+          userId: user.id,
+          banned: false,
+          nickname: user.displayName + " (nickname)",
+        })),
+      },
+    },
+  });
+  return {
+    id: server.id,
+    name: server.name,
+  };
 }
