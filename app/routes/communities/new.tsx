@@ -24,7 +24,7 @@ export const action: ActionFunction = async ({ request }) => {
   return redirect(`/communities/${community.id}`);
 };
 
-export default function CommunityAdd() {
+export default function AddCommunityPage() {
   const submit = useSubmit();
 
   function createFakeCommunity() {

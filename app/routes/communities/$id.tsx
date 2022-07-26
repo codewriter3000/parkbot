@@ -4,13 +4,13 @@ import type { ActionFunction, LoaderFunction } from "@remix-run/node";
 import invariant from "tiny-invariant";
 
 import { requireUser } from "~/auth.server";
-import { MemberListRow } from "~/components/MemberListRow";
 import type { Community, Member } from "~/models/discord.server";
 import {
   checkAdminRights,
   getCommunityById,
   getCommunityMembers,
 } from "~/models/discord.server";
+import { MemberListTable } from "~/components/MemberListTable";
 
 type LoaderData = {
   community: Community;
@@ -60,6 +60,20 @@ export const action: ActionFunction = async ({ request }) => {
 export default function CommunityDetails() {
   const data = useLoaderData<LoaderData>();
 
+  const accentColor = {
+    members: "purple",
+    muted: "yellow",
+    banned: "red",
+    admins: "green",
+  }[data.listToDisplay];
+
+  const title = {
+    members: "All Members",
+    muted: "Muted",
+    banned: "Banned",
+    admins: "Administrators",
+  }[data.listToDisplay];
+
   return (
     <Form
       method="post"
@@ -70,7 +84,7 @@ export default function CommunityDetails() {
         width: "100%",
       }}
     >
-      <div className="text-center text-2xl py-4">All Members</div>
+      <div className="text-center text-2xl py-4">{title}</div>
 
       <div className="text-sm font-medium text-center text-gray-500">
         <ul className="flex content-center gap-x-3">
@@ -125,31 +139,11 @@ export default function CommunityDetails() {
         </ul>
       </div>
 
-      <table className="table-auto border-collapse border border-slate-500">
-        <thead>
-          <tr>
-            <th className="border border-slate-300 pl-3 py-2 text-left">
-              Nickname
-            </th>
-            <th className="border border-slate-300 pl-3 py-2 text-left">
-              Username
-            </th>
-            <th className="border border-slate-300 pl-3 py-2 text-left">
-              User ID
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          {data.members.map((member: any) => (
-            <MemberListRow
-              key={member.id}
-              nickname={member.nickname}
-              username={member.username}
-              userID={member.id}
-            />
-          ))}
-        </tbody>
-      </table>
+      <MemberListTable
+        members={data.members}
+        accentColor={accentColor}
+        tableType={data.listToDisplay}
+      />
     </Form>
   );
 }
