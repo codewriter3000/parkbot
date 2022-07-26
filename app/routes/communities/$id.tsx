@@ -5,43 +5,29 @@ import invariant from "tiny-invariant";
 
 import { requireUser } from "~/auth.server";
 import { MemberListRow } from "~/components/MemberListRow";
-
-// Should be in backend file
-type Optional<T, K extends keyof T> = Pick<Partial<T>, K> & Omit<T, K>;
-type Member = Optional<
-  {
-    id: string;
-    username: string;
-    nickname: string;
-
-    muted: boolean;
-    mutedSince: Date | undefined;
-    mutedDuration: number | undefined;
-    banned: boolean;
-  },
-  "mutedSince" | "mutedDuration"
->;
+import type { Community, Member } from "~/models/discord.server";
+import {
+  checkAdminRights,
+  getCommunityById,
+  getCommunityMembers,
+} from "~/models/discord.server";
 
 type LoaderData = {
-  community: {
-    id: string;
-    name: string;
-  }; // should be imported from backend file
+  community: Community;
   members: Member[];
   listToDisplay: "members" | "muted" | "banned" | "admins";
 };
 
 export const loader: LoaderFunction = async ({ request, params }) => {
-  await requireUser(request);
+  const user = await requireUser(request);
   invariant(params.id, "Community id is required");
 
-  // get community details by id
-  // if not found, throw 404
-  // if user is not admin of community, throw 404 or 403
-  const community = {
-    id: "1",
-    name: "Dummy community",
-  };
+  const community = await getCommunityById(params.id);
+  if (!community || !(await checkAdminRights(user, community))) {
+    throw new Response("Community not found", {
+      status: 404,
+    });
+  }
 
   const url = new URL(request.url);
   const listToDisplay = url.searchParams.get("display") || "members";
@@ -58,45 +44,9 @@ export const loader: LoaderFunction = async ({ request, params }) => {
 
   let data: LoaderData = {
     community,
-    members: [],
+    members: await getCommunityMembers(community, listToDisplay),
     listToDisplay,
   };
-
-  const dummyMembers: Member[] = [
-    {
-      id: "1",
-      username: "user1",
-      nickname: "User 1",
-      muted: false,
-      banned: false,
-    },
-    {
-      id: "2",
-      username: "user2",
-      nickname: "User 2",
-      muted: false,
-      banned: false,
-    },
-  ];
-
-  switch (listToDisplay) {
-    case "members":
-      // get members
-      data.members = dummyMembers;
-      break;
-    case "muted":
-      // get muted members
-      data.members = dummyMembers;
-      break;
-    case "banned":
-      // get banned members
-      data.members = dummyMembers;
-      break;
-    case "admins":
-      // get admins
-      data.members = dummyMembers;
-      break;
-  }
 
   return data;
 };

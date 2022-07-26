@@ -3,16 +3,14 @@ import type { LoaderFunction } from "@remix-run/node";
 
 import { useUser } from "~/utils";
 import { requireUser } from "~/auth.server";
+import type { Community } from "~/models/discord.server";
+import { getCommunityList } from "~/models/discord.server";
 
-type LoaderData = {
-  id: string;
-  name: string;
-}[];
+type LoaderData = Community[];
 
 export const loader: LoaderFunction = async ({ request }) => {
-  await requireUser(request);
-  // get community list for user
-  return [{ id: "1", name: "Dummy community" }];
+  const user = await requireUser(request);
+  return getCommunityList(user);
 };
 
 export default function Communities() {
