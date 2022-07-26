@@ -11,7 +11,7 @@ model User {
   id       String @id @default(cuid())
   username String @unique
 
-  discord       DiscordUser? @relation(fields: [discordUserId], references: [id])
+  discord       DiscordUser? @relation(fields: [discordUserId], references: [id], onDelete: Cascade)
   discordUserId String       @unique
 
   communities DiscordServer[]
@@ -35,15 +35,15 @@ model DiscordServer {
 }
 
 model DiscordMember {
-  user     DiscordUser   @relation(fields: [userId], references: [id])
+  user     DiscordUser   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId   String
-  server   DiscordServer @relation(fields: [serverId], references: [id])
+  server   DiscordServer @relation(fields: [serverId], references: [id], onDelete: Cascade)
   serverId String
 
   nickname String?
   banned   Boolean
   muted    Mute?   @relation(fields: [muteId], references: [id])
-  muteId   String  @unique
+  muteId   String? @unique
 
   @@id([userId, serverId])
 }
