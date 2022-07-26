@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Form, useLoaderData } from "@remix-run/react";
+import { Form, useCatch, useLoaderData } from "@remix-run/react";
 import type { ActionFunction, LoaderFunction } from "@remix-run/node";
 import invariant from "tiny-invariant";
 
@@ -151,5 +151,32 @@ export default function CommunityDetails() {
         </tbody>
       </table>
     </Form>
+  );
+}
+
+export function ErrorBoundary({ error }: { error: Error }) {
+  console.error(error);
+
+  return (
+    <div>
+      <b>An unexpected error occurred</b>
+      <pre>{error.message}</pre>
+    </div>
+  );
+}
+
+export function CatchBoundary() {
+  const caught = useCatch();
+
+  if (caught.status === 404) {
+    return (
+      <div>
+        <b>Community not found</b>
+      </div>
+    );
+  }
+
+  throw new Error(
+    `Unexpected caught response with status: ${caught.status} \n${caught.data}`
   );
 }
