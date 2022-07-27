@@ -1,32 +1,28 @@
-import type { LoaderFunction } from "@remix-run/node";
-import { json } from "@remix-run/node";
 import { Form, Link, NavLink, Outlet, useLoaderData } from "@remix-run/react";
+import type { LoaderFunction } from "@remix-run/node";
 
-import { requireUserId } from "~/session.server";
 import { useUser } from "~/utils";
-import { getNoteListItems } from "~/models/note.server";
+import { requireUser } from "~/auth.server";
+import type { Community } from "~/models/discord.server";
+import { getCommunityList } from "~/models/discord.server";
 
-type LoaderData = {
-  noteListItems: Awaited<ReturnType<typeof getNoteListItems>>;
-};
+type LoaderData = Community[];
 
 export const loader: LoaderFunction = async ({ request }) => {
-  const userId = await requireUserId(request);
-  const noteListItems = await getNoteListItems({ userId });
-  return json<LoaderData>({ noteListItems });
+  const user = await requireUser(request);
+  return getCommunityList(user);
 };
 
-export default function NotesPage() {
-  const data = useLoaderData() as LoaderData;
+export default function Communities() {
   const user = useUser();
+  const data = useLoaderData<LoaderData>();
 
   return (
     <div className="flex h-full min-h-screen flex-col">
       <header className="flex items-center justify-between bg-slate-800 p-4 text-white">
-        <h1 className="text-3xl font-bold">
-          <Link to=".">Notes</Link>
-        </h1>
-        <p>{user.email}</p>
+        <button className={"button"}>Toggle Communities</button>
+        {/* <ParkbotButton text="Toggle Communities" action={() => {}}/> */}
+        <p>{user.displayName}</p>
         <Form action="/logout" method="post">
           <button
             type="submit"
@@ -39,25 +35,28 @@ export default function NotesPage() {
 
       <main className="flex h-full bg-white">
         <div className="h-full w-80 border-r bg-gray-50">
-          <Link to="new" className="block p-4 text-xl text-blue-500">
-            + New Note
+          <h1 className="text-3xl font-bold text-center block p-4 border-b">
+            <Link to=".">Communities</Link>
+          </h1>
+          <Link to="new" className="block p-4 text-xl text-green-700">
+            + Add a community
           </Link>
 
           <hr />
 
-          {data.noteListItems.length === 0 ? (
-            <p className="p-4">No notes yet</p>
+          {data.length === 0 ? (
+            <p className="p-4">No communities yet</p>
           ) : (
             <ol>
-              {data.noteListItems.map((note) => (
-                <li key={note.id}>
+              {data.map((community) => (
+                <li key={community.id}>
                   <NavLink
                     className={({ isActive }) =>
                       `block border-b p-4 text-xl ${isActive ? "bg-white" : ""}`
                     }
-                    to={note.id}
+                    to={community.id}
                   >
-                    📝 {note.title}
+                    {community.name}
                   </NavLink>
                 </li>
               ))}
@@ -70,5 +69,5 @@ export default function NotesPage() {
         </div>
       </main>
     </div>
-  );
-}
+  )
+};

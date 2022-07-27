@@ -1,5 +1,4 @@
-import type { Password, User } from "@prisma/client";
-import bcrypt from "bcryptjs";
+import type { User, DiscordUser } from "@prisma/client";
 
 import { prisma } from "~/db.server";
 
@@ -9,54 +8,62 @@ export async function getUserById(id: User["id"]) {
   return prisma.user.findUnique({ where: { id } });
 }
 
-export async function getUserByEmail(email: User["email"]) {
-  return prisma.user.findUnique({ where: { email } });
-}
+export async function getUserByDiscordData(
+  discordUserId: string,
+  displayName: string
+) {
+  const discordUser = await getDiscordUser(discordUserId, displayName);
+  const user = await prisma.user.findUnique({
+    where: { discordUserId: discordUser.id },
+  });
 
-export async function createUser(email: User["email"], password: string) {
-  const hashedPassword = await bcrypt.hash(password, 10);
-
-  return prisma.user.create({
-    data: {
-      email,
-      password: {
-        create: {
-          hash: hashedPassword,
+  if (user == null) {
+    return await prisma.user.create({
+      data: {
+        username: discordUser.displayName,
+        discord: {
+          connect: {
+            id: discordUser.id,
+          },
         },
       },
-    },
-  });
+    });
+  }
+
+  if (user.username != discordUser.displayName) {
+    return await prisma.user.update({
+      where: { id: user.id },
+      data: { username: discordUser.displayName },
+    });
+  }
+
+  return user;
 }
 
-export async function deleteUserByEmail(email: User["email"]) {
-  return prisma.user.delete({ where: { email } });
-}
-
-export async function verifyLogin(
-  email: User["email"],
-  password: Password["hash"]
+// Find, update, create a discord user matching the id
+export async function getDiscordUser(
+  id: DiscordUser["id"],
+  displayName: DiscordUser["displayName"]
 ) {
-  const userWithPassword = await prisma.user.findUnique({
-    where: { email },
-    include: {
-      password: true,
-    },
+  const discordUser = await prisma.discordUser.findUnique({
+    where: { id },
   });
 
-  if (!userWithPassword || !userWithPassword.password) {
-    return null;
+  if (discordUser == null) {
+    return await prisma.discordUser.create({
+      data: {
+        id,
+        displayName,
+      },
+    });
   }
 
-  const isValid = await bcrypt.compare(
-    password,
-    userWithPassword.password.hash
-  );
-
-  if (!isValid) {
-    return null;
+  if (discordUser.displayName !== displayName) {
+    return await prisma.discordUser.update({
+      where: { id },
+      data: { displayName },
+    });
   }
 
-  const { password: _password, ...userWithoutPassword } = userWithPassword;
-
-  return userWithoutPassword;
+  return discordUser;
 }

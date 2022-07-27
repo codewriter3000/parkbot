@@ -6,10 +6,10 @@ import MuteModal from "./MuteModal";
 import UnbanModal from "./UnbanModal";
 
 type MemberListTableProps = {
-    members: Array<Object>,
-    accentColor: string,
-    tableType: string,
-}
+  members: Array<Object>;
+  accentColor: string;
+  tableType: string;
+};
 
 export const MemberListTable: FunctionComponent<MemberListTableProps> = (
 {members, accentColor, tableType}: MemberListTableProps) => {
