@@ -5,7 +5,6 @@ import { useUser } from "~/utils";
 import { requireUser } from "~/auth.server";
 import type { Community } from "~/models/discord.server";
 import { getCommunityList } from "~/models/discord.server";
-import { ParkbotButton } from "~/components/ParkbotButton";
 
 type LoaderData = Community[];
 
@@ -21,7 +20,7 @@ export default function Communities() {
   return (
     <div className="flex h-full min-h-screen flex-col">
       <header className="flex items-center justify-between bg-slate-800 p-4 text-white">
-        <ParkbotButton text="Toggle Communities" action={() => {}} />
+        <button className="button">Toggle Communities</button>
         <p>{user.username}</p>
         <Form action="/logout" method="post">
           <button
@@ -38,7 +37,7 @@ export default function Communities() {
           <h1 className="text-3xl font-bold text-center block p-4 border-b">
             <Link to=".">Communities</Link>
           </h1>
-          <Link to="new" className="block p-4 text-xl text-blue-500">
+          <Link to="new" className="block p-4 text-xl text-green-700">
             + Add a community
           </Link>
 
@@ -69,5 +68,5 @@ export default function Communities() {
         </div>
       </main>
     </div>
-  );
-}
+  )
+};

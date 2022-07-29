@@ -61,7 +61,7 @@ export default function CommunityDetails() {
   const data = useLoaderData<LoaderData>();
 
   const accentColor = {
-    members: "purple",
+    members: "green",
     muted: "yellow",
     banned: "red",
     admins: "green",
@@ -93,8 +93,8 @@ export default function CommunityDetails() {
               href="?display=members"
               className={`${
                 data.listToDisplay == "members"
-                  ? "active text-blue-600 border-blue-600"
-                  : "hover:text-blue-600 hover:border-blue-600"
+                  ? "active text-green-700 border-green-700"
+                  : "hover:text-green-700 hover:border-green-700"
               } inline-block p-4 rounded-t-lg border-b-2 border-transparent`}
             >
               All Members

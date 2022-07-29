@@ -3,7 +3,6 @@ import { redirect } from "@remix-run/node";
 import { Form, useSubmit } from "@remix-run/react";
 import * as React from "react";
 
-import { ParkbotButton } from "~/components/ParkbotButton";
 import { requireUser } from "~/auth.server";
 import { createCommunity } from "~/models/discord.server";
 
@@ -81,7 +80,7 @@ export default function AddCommunityPage() {
           </select>
         </div>
         <div onClick={createFakeCommunity}>
-          <ParkbotButton text="Invite discord bot" />
+          <button className="button">Invite discord bot</button>
         </div>
       </div>
 
