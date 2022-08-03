@@ -1,18 +1,18 @@
-import { tab } from "@material-tailwind/react";
-import { FunctionComponent, useState } from "react";
+import type { FunctionComponent} from "react";
+import { useState } from "react";
 import BanModal from "./BanModal";
 import { MemberListRow } from "./MemberListRow";
-import MuteModal from "./MuteModal";
+import { MuteModal } from "./MuteModal";
 import UnbanModal from "./UnbanModal";
 
 type MemberListTableProps = {
-  members: Array<Object>;
-  accentColor: string;
-  tableType: string;
-};
+    members: Array<Object>,
+    accentColor: string,
+    tableType: string,
+}
 
 export const MemberListTable: FunctionComponent<MemberListTableProps> = (
-{members, accentColor, tableType}: MemberListTableProps) => {
+{members, tableType}: MemberListTableProps) => {
     const [selectedRows, setSelectedRows] = useState<string[]>([]);
 
     const [showMuteModal, setShowMuteModal] = useState(false);
@@ -21,8 +21,8 @@ export const MemberListTable: FunctionComponent<MemberListTableProps> = (
     const [showUnbanModal, setShowUnbanModal] = useState(false);
     
     return  <>
-                {showMuteModal ? <MuteModal /> : <></>}
-                {showChangeMuteModal ? <MuteModal /> : <></>}
+                {showMuteModal ? <MuteModal openHook={[showMuteModal, setShowMuteModal]} /> : <></>}
+                {showChangeMuteModal ? <MuteModal openHook={[showMuteModal, setShowMuteModal]} /> : <></>}
                 {showBanModal ? <BanModal /> : <></>}
                 {showUnbanModal ? <UnbanModal /> : <></>}
                 <div>

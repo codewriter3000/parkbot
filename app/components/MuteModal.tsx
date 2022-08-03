@@ -1,21 +1,30 @@
+import type { FunctionComponent} from 'react';
 import { Fragment, useRef, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { ExclamationIcon } from '@heroicons/react/outline';
 import { Form } from '@remix-run/react';
 import TimeUnitDropdown from './TimeUnitDropdown';
 
-export default function MuteModal() {
-  const [open, setOpen] = useState(true);
+type MuteModalProps = {
+  openHook: [boolean, React.Dispatch<React.SetStateAction<boolean>>],
+}
+
+export const MuteModal: FunctionComponent<MuteModalProps> = 
+({openHook}: MuteModalProps) => {
 
   const cancelButtonRef = useRef(null);
 
+  const handleInputChange = (event: any) => {
+    const target = event.target;
+  };
+
   return (
-    <Transition.Root show={open} as={Fragment}>
+    <Transition.Root show={openHook[0]} as={Fragment}>
       <Dialog
         as="div"
         className="fixed z-10 inset-0 overflow-y-auto"
         initialFocus={cancelButtonRef}
-        onClose={setOpen}
+        onClose={openHook[1]}
       >
         <div
           className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block
@@ -68,13 +77,14 @@ export default function MuteModal() {
                     </Dialog.Title>
                     <div className="mt-2">
                         <Form method="post">
-                            <div className="flex">
+                            <div className="space-x-4">
                                 <input type="textbox" id="quantity" 
                                 className="inline-block text-sm text-gray-900 bg-gray-50 
                                 rounded-lg border border-gray-300 focus:ring-red-600 
-                                focus:border-red-600"
+                                focus:border-red-600 text-center"
                                 placeholder="Length" required />
                                 <TimeUnitDropdown />
+                                <textarea />
                             </div>
                         </Form>
                     </div>
@@ -86,7 +96,7 @@ export default function MuteModal() {
                   type="button"
                   className="button"
                   style={{backgroundColor: "#EAB308", color: "#0F172A"}}
-                  onClick={() => setOpen(false)}
+                  onClick={() => openHook[1](false)}
                 >
                   Confirm
                 </button>
@@ -94,7 +104,7 @@ export default function MuteModal() {
                   type="button"
                   className="button"
                   style={{backgroundColor: "#F1F5F9", color: "#0F172A"}}
-                  onClick={() => setOpen(false)}
+                  onClick={() => openHook[1](false)}
                   ref={cancelButtonRef}
                 >
                   Cancel

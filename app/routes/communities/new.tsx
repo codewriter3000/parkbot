@@ -80,7 +80,7 @@ export default function AddCommunityPage() {
           </select>
         </div>
         <div onClick={createFakeCommunity}>
-          <ParkbotButton text="Invite discord bot" />
+          <button className="button">Invite discord bot</button>
         </div>
       </div>
 

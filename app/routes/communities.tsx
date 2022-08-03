@@ -20,9 +20,8 @@ export default function Communities() {
   return (
     <div className="flex h-full min-h-screen flex-col">
       <header className="flex items-center justify-between bg-slate-800 p-4 text-white">
-        <button className={"button"}>Toggle Communities</button>
-        {/* <ParkbotButton text="Toggle Communities" action={() => {}}/> */}
-        <p>{user.displayName}</p>
+        <button className="button">Toggle Communities</button>
+        <p>{user.username}</p>
         <Form action="/logout" method="post">
           <button
             type="submit"
