@@ -2,7 +2,6 @@ import type { ActionFunction, LoaderFunction } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import { Form, useActionData, useLoaderData } from "@remix-run/react";
 import * as React from "react";
-import { ParkbotButton } from "~/components/ParkbotButton";
 import { MemberListRow } from "~/components/MemberListRow";
 import { MemberListTable } from "~/components/MemberListTable";
 
@@ -20,11 +19,9 @@ type ActionData = {
 
 export const loader: LoaderFunction = async () => {
   return json([
-    { nickname: "alex", username: "baja blast#0001", userID: "197145017419169793" },
-    { nickname: "Prefix the Pizza Man", username: "Prefix#3544", userID: "754891206177063042" },
-    { nickname: "FFFrenchman [VictimOf1984] 🇫🇷", username: "jostf#0424", userID: "445621472556220446" },
-    { nickname: "ForcedevilX 🇦🇺 [FDG]", username: "ForcedevilX#2549", userID: "544452118908502032" },
-    { nickname: "𝖂𝖔𝖑𝖋𝖗𝖆𝖒 | [ISTGC]", username: "WolfGang#2199", userID: "302514441982050304" },
+    { nickname: "aden", username: "aden#7743", userID: "520743103410208768" },
+    { nickname: "Ivan, i ping dinosaurs", username: "TZAR#7173", userID: "459796041563373579" },
+    { nickname: "Sepulcher", username: "Sepulcher#0723", userID: "881566826935484436" },
   ]);
 };
 

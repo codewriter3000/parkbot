@@ -15,7 +15,7 @@ import {
 
 import parkbotStylesheetUrl from "./styles/parkbot.css";
 import tailwindStylesheetUrl from "./styles/tailwind.css";
-import { getUser } from "./session.server";
+import { getUser } from "./auth.server";
 
 export const links: LinksFunction = () => {
   return [{ rel: "stylesheet", href: tailwindStylesheetUrl },
@@ -24,7 +24,7 @@ export const links: LinksFunction = () => {
 
 export const meta: MetaFunction = () => ({
   charset: "utf-8",
-  title: "Remix Notes",
+  title: "Parkbot",
   viewport: "width=device-width,initial-scale=1",
 });
 
