@@ -1,21 +1,38 @@
+import type { FunctionComponent} from 'react';
 import { Fragment, useRef, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { ExclamationIcon } from '@heroicons/react/outline';
 import { Form } from '@remix-run/react';
 import TimeUnitDropdown from './TimeUnitDropdown';
 
-export default function ChangeMuteModal() {
-  const [open, setOpen] = useState(true);
+type ChangeMuteModalProps = {
+  openHook: [boolean, React.Dispatch<React.SetStateAction<boolean>>],
+}
+
+export const ChangeMuteModal: FunctionComponent<ChangeMuteModalProps> = 
+({openHook}: ChangeMuteModalProps) => {
 
   const cancelButtonRef = useRef(null);
 
+  const emptyMute = {
+    length: 0,
+    timeUnit: "minutes",
+    reason: "",
+  }
+
+  const [mute, setMute] = useState(emptyMute);
+
+  const handleInputChange = (event: any) => {
+    const target = event.target;
+  };
+
   return (
-    <Transition.Root show={open} as={Fragment}>
+    <Transition.Root show={openHook[0]} as={Fragment}>
       <Dialog
         as="div"
         className="fixed z-10 inset-0 overflow-y-auto"
         initialFocus={cancelButtonRef}
-        onClose={setOpen}
+        onClose={openHook[1]}
       >
         <div
           className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block
@@ -64,17 +81,23 @@ export default function ChangeMuteModal() {
                   </div>
                   <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
                     <Dialog.Title as="h3" className="text-lg leading-6 font-medium text-gray-900">
-                      Mute User(s)
+                      Change Mute for User(s)
                     </Dialog.Title>
                     <div className="mt-2">
                         <Form method="post">
-                            <div className="flex">
-                                <input type="textbox" id="quantity" 
-                                className="inline-block text-sm text-gray-900 bg-gray-50 
-                                rounded-lg border border-gray-300 focus:ring-red-600 
-                                focus:border-red-600"
-                                placeholder="Length" required />
-                                <TimeUnitDropdown />
+                            <div className="space-x-4 space-y-4">
+                                <div className="relative">
+                                  <input type="textbox" id="quantity" 
+                                  className="text-sm text-gray-900 bg-gray-50 
+                                  rounded-lg border border-gray-300 focus:ring-gray-600 
+                                  focus:border-gray-600 text-center"
+                                  placeholder="Length" required />
+                                  <TimeUnitDropdown />
+                                </div>
+                                <textarea className="w-full text-sm text-gray-900 
+                                  bg-gray-50 rounded-lg border border-gray-300 
+                                  focus:ring-gray-600 focus:border-gray-600 text-center"
+                                  placeholder="Reason" required />
                             </div>
                         </Form>
                     </div>
@@ -86,7 +109,7 @@ export default function ChangeMuteModal() {
                   type="button"
                   className="button"
                   style={{backgroundColor: "#EAB308", color: "#0F172A"}}
-                  onClick={() => setOpen(false)}
+                  onClick={() => openHook[1](false)}
                 >
                   Confirm
                 </button>
@@ -94,7 +117,7 @@ export default function ChangeMuteModal() {
                   type="button"
                   className="button"
                   style={{backgroundColor: "#F1F5F9", color: "#0F172A"}}
-                  onClick={() => setOpen(false)}
+                  onClick={() => openHook[1](false)}
                   ref={cancelButtonRef}
                 >
                   Cancel

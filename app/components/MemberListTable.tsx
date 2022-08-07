@@ -1,6 +1,7 @@
 import type { FunctionComponent} from "react";
 import { useState } from "react";
 import BanModal from "./BanModal";
+import { ChangeMuteModal } from "./ChangeMuteModal";
 import { MemberListRow } from "./MemberListRow";
 import { MuteModal } from "./MuteModal";
 import UnbanModal from "./UnbanModal";
@@ -22,7 +23,7 @@ export const MemberListTable: FunctionComponent<MemberListTableProps> = (
     
     return  <>
                 {showMuteModal ? <MuteModal openHook={[showMuteModal, setShowMuteModal]} /> : <></>}
-                {showChangeMuteModal ? <MuteModal openHook={[showMuteModal, setShowMuteModal]} /> : <></>}
+                {showChangeMuteModal ? <ChangeMuteModal openHook={[showChangeMuteModal, setShowChangeMuteModal]} /> : <></>}
                 {showBanModal ? <BanModal /> : <></>}
                 {showUnbanModal ? <UnbanModal /> : <></>}
                 <div>
