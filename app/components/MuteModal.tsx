@@ -14,6 +14,14 @@ export const MuteModal: FunctionComponent<MuteModalProps> =
 
   const cancelButtonRef = useRef(null);
 
+  const emptyMute = {
+    length: 0,
+    timeUnit: "minutes",
+    reason: "",
+  }
+
+  const [mute, setMute] = useState(emptyMute);
+
   const handleInputChange = (event: any) => {
     const target = event.target;
   };
@@ -77,14 +85,19 @@ export const MuteModal: FunctionComponent<MuteModalProps> =
                     </Dialog.Title>
                     <div className="mt-2">
                         <Form method="post">
-                            <div className="space-x-4">
-                                <input type="textbox" id="quantity" 
-                                className="inline-block text-sm text-gray-900 bg-gray-50 
-                                rounded-lg border border-gray-300 focus:ring-red-600 
-                                focus:border-red-600 text-center"
-                                placeholder="Length" required />
-                                <TimeUnitDropdown />
-                                <textarea />
+                            <div className="space-x-4 space-y-4">
+                                <div className="relative">
+                                  <input type="textbox" id="quantity" 
+                                  className="text-sm text-gray-900 bg-gray-50 
+                                  rounded-lg border border-gray-300 focus:ring-gray-600 
+                                  focus:border-gray-600 text-center"
+                                  placeholder="Length" required />
+                                  <TimeUnitDropdown />
+                                </div>
+                                <textarea className="w-full text-sm text-gray-900 
+                                  bg-gray-50 rounded-lg border border-gray-300 
+                                  focus:ring-gray-600 focus:border-gray-600 text-center"
+                                  placeholder="Reason" required />
                             </div>
                         </Form>
                     </div>
