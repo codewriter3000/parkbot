@@ -2,8 +2,7 @@ import type { ActionFunction, LoaderFunction } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import { Form, useActionData, useLoaderData } from "@remix-run/react";
 import * as React from "react";
-import { MemberListRow } from "~/components/MemberListRow";
-import { MemberListTable } from "~/components/MemberListTable";
+import { BannedListTable } from "~/components/BannedListTable";
 
 // import { createNote } from "~/models/note.server";
 // import { requireUserId } from "~/session.server";
@@ -100,7 +99,7 @@ export default function AddCommunityPage() {
       </div>
 
 
-      <MemberListTable members={users} accentColor="red" tableType="banned" />
+      <BannedListTable members={users} />
     </Form>
   );
 }

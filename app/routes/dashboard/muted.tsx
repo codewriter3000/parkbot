@@ -2,7 +2,7 @@ import type { ActionFunction, LoaderFunction } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import { Form, useActionData, useLoaderData } from "@remix-run/react";
 import * as React from "react";
-import { MemberListTable } from "~/components/MemberListTable";
+import { MutedListTable } from "~/components/MutedListTable";
 
 // import { createNote } from "~/models/note.server";
 // import { requireUserId } from "~/session.server";
@@ -101,7 +101,7 @@ export default function AddCommunityPage() {
           </ul>
       </div>
 
-      <MemberListTable members={users} accentColor="yellow" tableType="muted" />
+      <MutedListTable members={users} />
     </Form>
   );
 }

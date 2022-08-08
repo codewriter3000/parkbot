@@ -11,6 +11,8 @@ import {
   getCommunityMembers,
 } from "~/models/discord.server";
 import { MemberListTable } from "~/components/MemberListTable";
+import { BannedListTable } from "~/components/BannedListTable";
+import { MutedListTable } from "~/components/MutedListTable";
 
 type LoaderData = {
   community: Community;
@@ -59,13 +61,6 @@ export const action: ActionFunction = async ({ request }) => {
 
 export default function CommunityDetails() {
   const data = useLoaderData<LoaderData>();
-
-  const accentColor = {
-    members: "green",
-    muted: "yellow",
-    banned: "red",
-    admins: "green",
-  }[data.listToDisplay];
 
   const title = {
     members: "All Members",
@@ -139,11 +134,13 @@ export default function CommunityDetails() {
         </ul>
       </div>
 
-      <MemberListTable
-        members={data.members}
-        accentColor={accentColor}
-        tableType={data.listToDisplay}
-      />
+      {data.listToDisplay === "members" ?
+        <MemberListTable members={data.members} />
+      : data.listToDisplay === "muted" ?
+        <MutedListTable members={data.members} />
+      : data.listToDisplay === "banned" ?
+        <BannedListTable members={data.members} />
+      : <></>}
     </Form>
   );
 }
