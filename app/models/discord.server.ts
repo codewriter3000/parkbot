@@ -16,11 +16,13 @@ export type Member = Optional<
     nickname: string | null;
 
     muted: boolean;
-    mutedSince: Date | undefined;
-    mutedDuration: number | undefined;
+    muteSince: Date | undefined;
+    muteDuration: number | undefined;
+    muteReason: string | undefined;
+
     banned: boolean;
   },
-  "mutedSince" | "mutedDuration"
+  "muteSince" | "muteDuration" | "muteReason"
 >;
 
 export async function getCommunityList(user: User): Promise<Community[]> {
@@ -122,8 +124,9 @@ export async function getCommunityMembers(
     username: member.user.displayName,
     nickname: member.nickname,
     muted: member.muted != null,
-    mutedSince: member.muted?.since,
-    mutedDuration: member.muted?.duration,
+    muteSince: member.muted?.since,
+    muteDuration: member.muted?.duration,
+    muteReason: member.muted?.reason,
     banned: member.banned,
   }));
 }
