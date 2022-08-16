@@ -1,24 +1,26 @@
-import type { FunctionComponent} from 'react';
-import { Fragment, useRef, useState } from 'react';
-import { Dialog, Transition } from '@headlessui/react';
-import { ExclamationIcon } from '@heroicons/react/outline';
-import { Form } from '@remix-run/react';
-import TimeUnitDropdown from './TimeUnitDropdown';
+import type { FunctionComponent } from "react";
+import { Fragment, useRef, useState } from "react";
+import { Dialog, Transition } from "@headlessui/react";
+import { ExclamationIcon } from "@heroicons/react/outline";
+import { Form } from "@remix-run/react";
+import TimeUnitDropdown from "./TimeUnitDropdown";
 
 type MuteModalProps = {
-  openHook: [boolean, React.Dispatch<React.SetStateAction<boolean>>],
-}
+  openHook: [boolean, React.Dispatch<React.SetStateAction<boolean>>];
+  selectedUsers: string[];
+};
 
-export const MuteModal: FunctionComponent<MuteModalProps> = 
-({openHook}: MuteModalProps) => {
-
+export const MuteModal: FunctionComponent<MuteModalProps> = ({
+  openHook,
+  selectedUsers,
+}: MuteModalProps) => {
   const cancelButtonRef = useRef(null);
 
   const emptyMute = {
     length: 0,
     timeUnit: "minutes",
     reason: "",
-  }
+  };
 
   const [mute, setMute] = useState(emptyMute);
 
@@ -51,7 +53,10 @@ export const MuteModal: FunctionComponent<MuteModalProps> =
           </Transition.Child>
 
           {/* This element is to trick the browser into centering the modal contents. */}
-          <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">
+          <span
+            className="hidden sm:inline-block sm:align-middle sm:h-screen"
+            aria-hidden="true"
+          >
             &#8203;
           </span>
           <Transition.Child
@@ -65,11 +70,28 @@ export const MuteModal: FunctionComponent<MuteModalProps> =
           >
             <div
               className="inline-block align-bottom bg-white rounded-lg
-               text-left 
-            overflow-hidden shadow-xl 
-            transform transition-all 
+               text-left
+            overflow-hidden shadow-xl
+            transform transition-all
             sm:my-8 sm:align-middle sm:max-w-lg sm:w-full"
             >
+              {/* TODO This should be moved into the right fiels in the dialog */}
+              <Form action="#" method="post" id="hacky-backend-form">
+                <input type="hidden" name="action" value="mute" />
+                {selectedUsers.map((id) => (
+                  <input type="hidden" name="users" value={id} key={id} />
+                ))}
+                <input type="text" name="quantity" />
+                <select name="unit">
+                  <option value="minutes">Minutes</option>
+                  <option value="hours">Hours</option>
+                  <option value="days">Days</option>
+                  <option value="weeks">Weeks</option>
+                </select>
+                <textarea name="reason"></textarea>
+                <input type="submit" className="border-2 border-black" />
+              </Form>
+
               <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                 <div className="sm:flex sm:items-start">
                   <div
@@ -77,29 +99,42 @@ export const MuteModal: FunctionComponent<MuteModalProps> =
                    justify-center h-12 w-12 rounded-full bg-yellow-100 sm:mx-0
                     sm:h-10 sm:w-10"
                   >
-                    <ExclamationIcon className="h-6 w-6 text-yellow-400" aria-hidden="true" />
+                    <ExclamationIcon
+                      className="h-6 w-6 text-yellow-400"
+                      aria-hidden="true"
+                    />
                   </div>
                   <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-                    <Dialog.Title as="h3" className="text-lg leading-6 font-medium text-gray-900">
+                    <Dialog.Title
+                      as="h3"
+                      className="text-lg leading-6 font-medium text-gray-900"
+                    >
                       Mute User(s)
                     </Dialog.Title>
                     <div className="mt-2">
-                        <Form method="post">
-                            <div className="space-x-4 space-y-4">
-                                <div className="relative">
-                                  <input type="textbox" id="quantity" 
-                                  className="text-sm text-gray-900 bg-gray-50 
-                                  rounded-lg border border-gray-300 focus:ring-gray-600 
+                      <Form method="post">
+                        <div className="space-x-4 space-y-4">
+                          <div className="relative">
+                            <input
+                              type="textbox"
+                              id="quantity"
+                              className="text-sm text-gray-900 bg-gray-50
+                                  rounded-lg border border-gray-300 focus:ring-gray-600
                                   focus:border-gray-600 text-center"
-                                  placeholder="Length" required />
-                                  <TimeUnitDropdown />
-                                </div>
-                                <textarea className="w-full text-sm text-gray-900 
-                                  bg-gray-50 rounded-lg border border-gray-300 
+                              placeholder="Length"
+                              required
+                            />
+                            <TimeUnitDropdown />
+                          </div>
+                          <textarea
+                            className="w-full text-sm text-gray-900
+                                  bg-gray-50 rounded-lg border border-gray-300
                                   focus:ring-gray-600 focus:border-gray-600 text-center"
-                                  placeholder="Reason" required />
-                            </div>
-                        </Form>
+                            placeholder="Reason"
+                            required
+                          />
+                        </div>
+                      </Form>
                     </div>
                   </div>
                 </div>
@@ -108,7 +143,7 @@ export const MuteModal: FunctionComponent<MuteModalProps> =
                 <button
                   type="button"
                   className="button"
-                  style={{backgroundColor: "#EAB308", color: "#0F172A"}}
+                  style={{ backgroundColor: "#EAB308", color: "#0F172A" }}
                   onClick={() => openHook[1](false)}
                 >
                   Confirm
@@ -116,7 +151,7 @@ export const MuteModal: FunctionComponent<MuteModalProps> =
                 <button
                   type="button"
                   className="button"
-                  style={{backgroundColor: "#F1F5F9", color: "#0F172A"}}
+                  style={{ backgroundColor: "#F1F5F9", color: "#0F172A" }}
                   onClick={() => openHook[1](false)}
                   ref={cancelButtonRef}
                 >
@@ -129,4 +164,4 @@ export const MuteModal: FunctionComponent<MuteModalProps> =
       </Dialog>
     </Transition.Root>
   );
-}
+};

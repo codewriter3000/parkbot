@@ -16,11 +16,13 @@ export type Member = Optional<
     nickname: string | null;
 
     muted: boolean;
-    mutedSince: Date | undefined;
-    mutedDuration: number | undefined;
+    muteSince: Date | undefined;
+    muteDuration: number | undefined;
+    muteReason: string | undefined;
+
     banned: boolean;
   },
-  "mutedSince" | "mutedDuration"
+  "muteSince" | "muteDuration" | "muteReason"
 >;
 
 export async function getCommunityList(user: User): Promise<Community[]> {
@@ -78,15 +80,16 @@ export async function getCommunityMembers(
 ): Promise<Member[]> {
   let where: any = {
     serverId: community.id,
-    muted: {
-      isNot: undefined,
-    },
+    muted: null,
     banned: false,
   };
   if (modifier === "muted") {
-    where.muted.isNot = null;
+    where.muted = {
+      isNot: null,
+    };
   }
   if (modifier === "banned") {
+    where.muted = undefined;
     where.banned = true;
   }
   if (modifier === "admins") {
@@ -122,8 +125,9 @@ export async function getCommunityMembers(
     username: member.user.displayName,
     nickname: member.nickname,
     muted: member.muted != null,
-    mutedSince: member.muted?.since,
-    mutedDuration: member.muted?.duration,
+    muteSince: member.muted?.since,
+    muteDuration: member.muted?.duration,
+    muteReason: member.muted?.reason,
     banned: member.banned,
   }));
 }
@@ -156,4 +160,47 @@ export async function createCommunity(
     id: server.id,
     name: server.name,
   };
+}
+
+const unitDurations = {
+  minutes: 60,
+  hours: 60 * 60,
+  days: 60 * 60 * 24,
+  weeks: 60 * 60 * 24 * 7,
+};
+
+export async function muteUsers(
+  serverId: string,
+  usersID: string[],
+  quantity: number,
+  unit: "minutes" | "hours" | "days" | "weeks",
+  reason: string
+) {
+  const duration = quantity * unitDurations[unit];
+
+  for (let userId of usersID) {
+    await prisma.discordMember.update({
+      where: {
+        userId_serverId: {
+          userId,
+          serverId,
+        },
+      },
+      data: {
+        muted: {
+          upsert: {
+            create: {
+              duration,
+              reason,
+            },
+            update: {
+              since: new Date(),
+              duration,
+              reason,
+            },
+          },
+        },
+      },
+    });
+  }
 }

@@ -9,10 +9,12 @@ import {
   checkAdminRights,
   getCommunityById,
   getCommunityMembers,
+  muteUsers,
 } from "~/models/discord.server";
 import { MemberListTable } from "~/components/MemberListTable";
 import { BannedListTable } from "~/components/BannedListTable";
 import { MutedListTable } from "~/components/MutedListTable";
+import { redirect } from "@remix-run/node";
 
 type LoaderData = {
   community: Community;
@@ -53,10 +55,41 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   return data;
 };
 
-export const action: ActionFunction = async ({ request }) => {
+export const action: ActionFunction = async ({ request, params }) => {
+  invariant(params.id, "Community id is required");
+
   const formData = await request.formData();
-  console.log(formData);
-  return null;
+  switch (formData.get("action")) {
+    case "mute":
+      const quantityEntry = formData.get("quantity");
+      const quantity =
+        quantityEntry != null ? parseInt(quantityEntry.toString()) : NaN;
+      if (isNaN(quantity)) {
+        throw new Response("Invalid quantity", {
+          status: 400,
+        });
+      }
+
+      const unit = formData.get("unit")?.toString();
+      if (
+        unit != "minutes" &&
+        unit != "hours" &&
+        unit != "days" &&
+        unit != "weeks"
+      ) {
+        throw new Response("Invalid unit", {
+          status: 400,
+        });
+      }
+
+      const reason = formData.get("reason")?.toString() || "";
+      const users = (formData.getAll("users") || []) as string[];
+
+      await muteUsers(params.id, users, quantity, unit, reason);
+      return redirect(`/communities/${params.id}?display=muted`);
+    default:
+      return null;
+  }
 };
 
 export default function CommunityDetails() {
@@ -134,13 +167,15 @@ export default function CommunityDetails() {
         </ul>
       </div>
 
-      {data.listToDisplay === "members" ?
+      {data.listToDisplay === "members" ? (
         <MemberListTable members={data.members} />
-      : data.listToDisplay === "muted" ?
+      ) : data.listToDisplay === "muted" ? (
         <MutedListTable members={data.members} />
-      : data.listToDisplay === "banned" ?
+      ) : data.listToDisplay === "banned" ? (
         <BannedListTable members={data.members} />
-      : <></>}
+      ) : (
+        <></>
+      )}
     </Form>
   );
 }

@@ -53,6 +53,7 @@ model Mute {
 
   since    DateTime @default(now())
   duration Int
+  reason   String
 
   member DiscordMember?
 }

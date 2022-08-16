@@ -105,6 +105,7 @@ async function seed() {
                 ? {
                     create: {
                       duration: 10000000,
+                      reason: "Muted by seeding script",
                     },
                   }
                 : undefined,
