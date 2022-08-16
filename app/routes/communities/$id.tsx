@@ -14,6 +14,7 @@ import {
 import { MemberListTable } from "~/components/MemberListTable";
 import { BannedListTable } from "~/components/BannedListTable";
 import { MutedListTable } from "~/components/MutedListTable";
+import { redirect } from "@remix-run/node";
 
 type LoaderData = {
   community: Community;
@@ -85,7 +86,7 @@ export const action: ActionFunction = async ({ request, params }) => {
       const users = (formData.getAll("users") || []) as string[];
 
       await muteUsers(params.id, users, quantity, unit, reason);
-      return null;
+      return redirect(`/communities/${params.id}?display=muted`);
     default:
       return null;
   }
