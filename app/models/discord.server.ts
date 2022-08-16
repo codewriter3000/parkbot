@@ -80,15 +80,16 @@ export async function getCommunityMembers(
 ): Promise<Member[]> {
   let where: any = {
     serverId: community.id,
-    muted: {
-      isNot: undefined,
-    },
+    muted: null,
     banned: false,
   };
   if (modifier === "muted") {
-    where.muted.isNot = null;
+    where.muted = {
+      isNot: null,
+    };
   }
   if (modifier === "banned") {
+    where.muted = undefined;
     where.banned = true;
   }
   if (modifier === "admins") {
