@@ -187,10 +187,12 @@ export async function muteUsers(
           upsert: {
             create: {
               duration,
+              reason,
             },
             update: {
               since: new Date(),
               duration,
+              reason,
             },
           },
         },
