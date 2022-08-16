@@ -157,3 +157,44 @@ export async function createCommunity(
     name: server.name,
   };
 }
+
+const unitDurations = {
+  minutes: 60,
+  hours: 60 * 60,
+  days: 60 * 60 * 24,
+  weeks: 60 * 60 * 24 * 7,
+};
+
+export async function muteUsers(
+  serverId: string,
+  usersID: string[],
+  quantity: number,
+  unit: "minutes" | "hours" | "days" | "weeks",
+  reason: string
+) {
+  const duration = quantity * unitDurations[unit];
+
+  for (let userId of usersID) {
+    await prisma.discordMember.update({
+      where: {
+        userId_serverId: {
+          userId,
+          serverId,
+        },
+      },
+      data: {
+        muted: {
+          upsert: {
+            create: {
+              duration,
+            },
+            update: {
+              since: new Date(),
+              duration,
+            },
+          },
+        },
+      },
+    });
+  }
+}
