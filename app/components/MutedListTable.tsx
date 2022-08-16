@@ -16,6 +16,19 @@ export const MutedListTable: FunctionComponent<MutedListTableProps> = ({
   const [showChangeMuteModal, setShowChangeMuteModal] = useState(false);
   const [showBanModal, setShowBanModal] = useState(false);
 
+  // an example of what data you can display for mutes
+  members.forEach((member: any) => {
+    const remaining =
+      member.muteDuration - (Date.now() - Date.parse(member.muteSince)) / 1000;
+    console.log(
+      member.nickname,
+      ":",
+      remaining,
+      "seconds -",
+      member.muteReason
+    );
+  });
+
   return (
     <>
       {showChangeMuteModal ? (
