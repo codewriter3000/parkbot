@@ -171,14 +171,14 @@ const unitDurations = {
 
 export async function muteUsers(
   serverId: string,
-  usersID: string[],
+  usersId: string[],
   quantity: number,
   unit: "minutes" | "hours" | "days" | "weeks",
   reason: string
 ) {
   const duration = quantity * unitDurations[unit];
 
-  for (let userId of usersID) {
+  for (let userId of usersId) {
     await prisma.discordMember.update({
       where: {
         userId_serverId: {
@@ -199,6 +199,24 @@ export async function muteUsers(
               reason,
             },
           },
+        },
+      },
+    });
+  }
+}
+
+export async function unmuteUsers(serverId: string, usersId: string[]) {
+  for (let userId of usersId) {
+    await prisma.discordMember.update({
+      where: {
+        userId_serverId: {
+          userId,
+          serverId,
+        },
+      },
+      data: {
+        muted: {
+          delete: true,
         },
       },
     });

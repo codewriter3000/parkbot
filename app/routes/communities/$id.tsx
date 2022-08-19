@@ -10,6 +10,7 @@ import {
   getCommunityById,
   getCommunityMembers,
   muteUsers,
+  unmuteUsers,
 } from "~/models/discord.server";
 import { MemberListTable } from "~/components/MemberListTable";
 import { BannedListTable } from "~/components/BannedListTable";
@@ -60,7 +61,7 @@ export const action: ActionFunction = async ({ request, params }) => {
 
   const formData = await request.formData();
   switch (formData.get("action")) {
-    case "mute":
+    case "mute": {
       const quantityEntry = formData.get("quantity");
       const quantity =
         quantityEntry != null ? parseInt(quantityEntry.toString()) : NaN;
@@ -87,8 +88,15 @@ export const action: ActionFunction = async ({ request, params }) => {
 
       await muteUsers(params.id, users, quantity, unit, reason);
       return redirect(`/communities/${params.id}?display=muted`);
-    default:
+    }
+    case "unmute": {
+      const users = (formData.getAll("users") || []) as string[];
+      await unmuteUsers(params.id, users);
+      return redirect(`/communities/${params.id}?display=muted`);
+    }
+    default: {
       return null;
+    }
   }
 };
 
