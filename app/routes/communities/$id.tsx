@@ -57,7 +57,15 @@ export const loader: LoaderFunction = async ({ request, params }) => {
 };
 
 export const action: ActionFunction = async ({ request, params }) => {
+  const user = await requireUser(request);
   invariant(params.id, "Community id is required");
+
+  const community = await getCommunityById(params.id);
+  if (!community || !(await checkAdminRights(user, community))) {
+    throw new Response("Community not found", {
+      status: 404,
+    });
+  }
 
   const formData = await request.formData();
   switch (formData.get("action")) {
